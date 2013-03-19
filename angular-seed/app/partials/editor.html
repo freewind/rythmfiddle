@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2" id="LEFT_PANEL">
+            <div class="well" style="padding:12px 0">
+                <ul class="nav nav-list">
+                    <li ng-repeat="code in codes|orderBy:'desc'" ng-class="{active: code.id==currentCode.id}">
+                        <a ng-href="/editor/{{code.id}}">{{code.desc}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-toolbar">
+                <a class="btn" ng-href="/editor" ng-show="current">New</a>
+                <button class="btn" ng-click="removeCurrentCode()" ng-show="current && currentCode.id">Delete Current
+                </button>
+            </div>
+        </div>
+        <div class="span6" id="EDITOR_PANEL">
+            <form name="editorForm">
+                <div>Params (in JSON format)</div>
+                <div class="params">
+                    <textarea ui-codemirror="{theme:'lesser-dark'}" ng-model="currentCode.params" style="height:100px;width:100%" placeholder="Params in Json format"></textarea>
+                </div>
+                <div class="btn-toolbar">
+                    <button class="btn" ng-click="run()">Run</button>
+                    <button class="btn" ng-show="current" ng-click="save()"
+                            ng-class="{'btn-primary':editorForm.codeSource.$dirty}">
+                        Save
+                    </button>
+                </div>
+                <div>Rythm template (You can use `String`,`Double`,`Boolean`, `List&lt;String&gt;`, `List&lt;Double&gt;`,
+                    `List&lt;Boolean&gt;`
+                    as argument types only)
+                </div>
+                <div class="source">
+                    <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}" ng-model="currentCode.source" style="height:400px;width:100%" name="codeSource"
+                              ui-keypress="{'ctrl-alt-r':'run($event)'}"> ></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="span4" id="RESULT_PANEL">
+            <div class="alert alert-error" ng-show="result.error">
+                {{result.error}}
+            </div>
+            <div ng-hide="result.error">
+                <tabs>
+                    <pane heading="Rendered Code">
+                        <pre ng-hide="showRawCode">{{result.htmlCode}}</pre>
+                    </pane>
+                    <pane heading="Java code">
+                        <pre>{{result.javaCode}}</pre>
+                    </pane>
+                </tabs>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

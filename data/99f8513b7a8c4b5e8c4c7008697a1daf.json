@@ -1,0 +1,1 @@
+{"id":"99f8513b7a8c4b5e8c4c7008697a1daf","desc":"06. inline tag","source":"@def hello(String who) {\n    Hello @who (at @ts())\n}\n\n@hello(\"rythm\")"}

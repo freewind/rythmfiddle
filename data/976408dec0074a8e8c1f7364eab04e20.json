@@ -1,0 +1,1 @@
+{"id":"976408dec0074a8e8c1f7364eab04e20","desc":"04. get/set","source":"@set(name: \"rythm\")\n@set(author\u003d\"green\")\n\n@get(\"name\")\n@get(author)"}
