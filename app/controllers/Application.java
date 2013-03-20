@@ -1,5 +1,6 @@
 package controllers;
 
+import com.greenlaw110.rythm.utils.S;
 import common.Helper;
 import models.Code;
 import org.apache.commons.io.FileUtils;
@@ -14,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static common.Helper.eq;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class Application extends Controller {
 
@@ -61,7 +61,7 @@ public class Application extends Controller {
 
     public static void delete(String body) {
         String id = (String) Helper.parseJson(body).get("id");
-        if (isNotBlank(id)) {
+        if (S.notEmpty(id)) {
             File file = getCodeFile(id);
             file.delete();
         }
@@ -108,7 +108,7 @@ public class Application extends Controller {
         String password = (String) map.get("password");
 
         Map<String, String> accounts = getAccounts();
-        if (isNotBlank(username) && eq(accounts.get(username), password)) {
+        if (S.notEmpty(username) && S.eq(accounts.get(username), password)) {
             session.put("username", username);
             renderJSON("{}");
         }
