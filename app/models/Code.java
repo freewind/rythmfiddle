@@ -21,8 +21,6 @@ import static common.Helper.eq;
  */
 public class Code {
 
-    private static RythmEngine engine = new RythmEngine();
-
     public String id;
     public String desc;
     public String params;
@@ -40,9 +38,9 @@ public class Code {
         CodeFile main = getMainCodeFile();
         File file = new File(id + "." + main.filename);
         if (S.notEmpty(params)) {
-            return rythm.render(file, JSONWrapper.wrap(params));
+            return rythm.sandbox().render(file, JSONWrapper.wrap(params));
         } else {
-            return rythm.render(file);
+            return rythm.sandbox().render(file);
         }
     }
 
