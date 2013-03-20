@@ -1,13 +1,12 @@
 package common;
 
 import com.google.gson.Gson;
+import com.greenlaw110.rythm.utils.S;
 import models.Code;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * User: freewind
@@ -25,7 +24,7 @@ public class Helper {
     }
 
     public static Map<String, Object> parseJson(String jsonStr) {
-        if (isBlank(jsonStr)) {
+        if (S.empty(jsonStr)) {
             return new HashMap();
         }
         return (Map<String, Object>) new Gson().fromJson(jsonStr, Map.class);

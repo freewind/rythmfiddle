@@ -38,9 +38,7 @@
             </form>
         </div>
         <div class="span4" id="RESULT_PANEL">
-            <div class="alert alert-error" ng-show="result.error">
-                {{result.error}}
-            </div>
+            <pre class="alert alert-error" ng-show="result.error">{{result.error}}</pre>
             <div ng-hide="result.error">
                 <tabs>
                     <pane heading="Rendered Code">
