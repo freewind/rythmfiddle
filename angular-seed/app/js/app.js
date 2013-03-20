@@ -21,4 +21,13 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
         })
         $routeProvider.otherwise({redirectTo: '/editor'});
         $locationProvider.html5Mode(true);
+    }]).
+    run(['$rootScope', '$http', function ($rootScope, $http) {
+        // try to get logged user information when page refreshed
+        if (!$rootScope.current) {
+            $http.get('/api/Application/current').success(function (data) {
+                $rootScope.current = data;
+            });
+        }
     }]);
+

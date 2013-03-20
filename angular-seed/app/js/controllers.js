@@ -18,19 +18,100 @@ function IndexCtrl($scope) {
 IndexCtrl.$inject = ['$scope'];
 
 function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
-    $scope.currentCode = {
-        id: $routeParams.id
-    };
     $scope.codes = [];
-    $scope.result = {
-        htmlCode: null,
-        javaCode: null
+    $scope.currentCode = {
+        id: $routeParams.id,
+        desc: null,
+        params: null,
+        files: [
+            {
+                filename: "main.html",
+                source: "",
+                isMain: true,
+                editing: false
+            }
+        ]
     };
+    $scope.result = {
+        error: '',
+        renderedCode: ''
+    }
+    $scope.currentFile = $scope.currentCode.files[0];
+
     $scope.run = run;
     $scope.save = save;
     $scope.removeCurrentCode = removeCurrentCode;
+    $scope.newFile = newFile;
+    $scope.saveFileName = saveFileName;
+    $scope.switchFile = switchFile;
+    $scope.removeFile = removeFile;
+    $scope.setMain = setMain;
+    $scope.editFileName = editFileName;
+    $scope.cancelEditFileName = cancelEditFileName;
 
     loadCodeList();
+    if ($scope.currentCode.id) {
+        $http.get('/api/Application/load?id=' + $scope.currentCode.id).success(function (data) {
+            $scope.currentCode = data;
+            $scope.currentFile = data.files[0];
+            $scope.run();
+        });
+    }
+
+    function setMain(file) {
+        _.each($scope.currentCode.files, function (file) {
+            file.isMain = false;
+        });
+        file.isMain = true;
+    }
+
+    function switchFile(file) {
+        $scope.currentFile = file;
+    }
+
+    function removeFile(file) {
+        if (confirm('Delete this template?')) {
+            $scope.currentCode.files = _.without($scope.currentCode.files, file);
+            if ($scope.currentCode.files.length == 0) {
+                $scope.currentFile = null;
+            }
+        }
+    }
+
+    // 1. not null
+    // 2. unique
+    function saveFileName(file) {
+        var editName = file.editName;
+        if (!editName) {
+            alert('filename should not be empty');
+        } else {
+            if (editName !== file.filename) {
+                var exist = _.find($scope.currentCode.files, function (item) {
+                    return item.filename === editName || item.filename.indexOf(editName + ".") === 0;
+                });
+                if (exist) {
+                    alert('Duplicate filename or prefix, please use another one.');
+                    return;
+                }
+            }
+            file.filename = editName;
+            file.editing = false;
+        }
+    }
+
+    function editFileName(file) {
+        file.editName = file.filename;
+        file.editing = true;
+    }
+
+    function cancelEditFileName(file) {
+        if (!file.filename) {
+            alert("Original filename is empty, you can't cancel");
+            return;
+        }
+        file.editName = null;
+        file.editing = false;
+    }
 
     function removeCurrentCode() {
         if (confirm('Are you sure to delete current demo')) {
@@ -48,12 +129,6 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         });
     }
 
-    if ($scope.currentCode.id) {
-        $http.get('/api/Application/load?id=' + $scope.currentCode.id).success(function (data) {
-            $scope.currentCode = data;
-            $scope.run();
-        });
-    }
 
     function save() {
         var d = $dialog.dialog({
@@ -72,6 +147,17 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
             $scope.result = data;
         });
+    }
+
+    function newFile() {
+        var oriCount = $scope.currentCode.files.length;
+        $scope.currentFile = {
+            filename: '',
+            source: '',
+            isMain: oriCount === 0,
+            editing: true
+        };
+        $scope.currentCode.files.push($scope.currentFile);
     }
 }
 EditorCtrl.$inject = ['$scope', '$http', '$routeParams', '$dialog', '$location'];

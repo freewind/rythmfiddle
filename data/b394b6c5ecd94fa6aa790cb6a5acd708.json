@@ -1,1 +1,11 @@
-{"id":"b394b6c5ecd94fa6aa790cb6a5acd708","desc":"05. assign","source":"@assign(\"name\") {\n    Rythm\n}\n\nHello, @name"}
+{
+    "id": "b394b6c5ecd94fa6aa790cb6a5acd708",
+    "desc": "05. assign",
+    "files": [
+        {
+            "filename": "main.html",
+            "source": "@assign(\"name\") {\n    Rythm\n}\n\nHello, @name",
+            "isMain": true
+        }
+    ]
+}

@@ -3,6 +3,7 @@ package controllers;
 import com.greenlaw110.rythm.utils.S;
 import common.Helper;
 import models.Code;
+import models.CodeFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import play.Play;
@@ -38,10 +39,10 @@ public class Application extends Controller {
         Code code = Helper.parse2code(body);
 
         try {
-            if (isNotBlank(code.source)) {
+            CodeFile mainCodeFile = code.getMainCodeFile();
+            if (isNotBlank(mainCodeFile.source)) {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("htmlCode", code.render());
-                map.put("javaCode", code.getJavaCode());
+                map.put("renderedCode", code.render());
                 renderJSON(map);
             } else {
                 renderJSON("{}");
@@ -134,6 +135,10 @@ public class Application extends Controller {
 
     private static File getCodeFile(String id) {
         return new File(DATA, id + ".json");
+    }
+
+    public static void current() {
+        renderText(session.get("username"));
     }
 
 }

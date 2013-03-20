@@ -4,8 +4,15 @@ import com.google.gson.Gson;
 import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
+import common.MyTemplateResourceLoader;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static common.Helper.eq;
 
 /**
  * User: freewind
@@ -14,33 +21,58 @@ import java.io.IOException;
  */
 public class Code {
 
+    private static RythmEngine engine = new RythmEngine();
+
     public String id;
     public String desc;
-    public String source;
     public String params;
-    
-    private static RythmEngine engine = new RythmEngine();
+    public List<CodeFile> files;
 
     public boolean isNew() {
         return S.empty(id);
     }
 
     public String render() throws IOException {
-        //Map<String, Object> ps = Helper.parseJson(params);
-        //return Rythm.sandbox().render(source, ps);
-        if (!S.empty(params)) {
-            return engine.sandbox().render(source, JSONWrapper.wrap(params));
+        Map<String, Object> conf = new HashMap();
+        conf.put("resource.loader", new MyTemplateResourceLoader(this));
+        RythmEngine rythm = new RythmEngine(conf);
+        rythm.resourceManager().scan(null);
+        CodeFile main = getMainCodeFile();
+        File file = new File(id + "." + main.filename);
+        if (S.notEmpty(params)) {
+            return rythm.render(file, JSONWrapper.wrap(params));
         } else {
-            return engine.sandbox().render(source);
+            return rythm.render(file);
         }
-    }
-
-    public String getJavaCode() {
-        return engine.getTemplate(source).__getTemplateClass(false).javaSource;
     }
 
     public String toJson() {
         return new Gson().toJson(this);
     }
 
+    public CodeFile getMainCodeFile() {
+        for (CodeFile file : files) {
+            if (file.isMain) {
+                return file;
+            }
+        }
+        return files.get(0);
+    }
+
+    public CodeFile findCodeFile(String path) {
+        // find by fullname first
+        for (CodeFile file : files) {
+            if (eq(file.filename, path)) {
+                return file;
+            }
+        }
+        // find by prefix
+        for (CodeFile file : files) {
+            if (file.filename.startsWith(path + ".")) {
+                return file;
+            }
+        }
+        return null;
+    }
 }
+

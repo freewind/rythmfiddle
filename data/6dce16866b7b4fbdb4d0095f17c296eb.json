@@ -1,0 +1,1 @@
+{"id":"6dce16866b7b4fbdb4d0095f17c296eb","desc":"09. invoke another template","files":[{"filename":"main.html","source":"@aaa(\"rythm\")","isMain":true},{"filename":"aaa.html","source":"@args String name\n\n@name in [aaa]","isMain":false}]}
