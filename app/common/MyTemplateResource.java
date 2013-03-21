@@ -1,5 +1,6 @@
 package common;
 
+import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.resource.TemplateResourceBase;
 import models.CodeFile;
 
@@ -11,10 +12,9 @@ import models.CodeFile;
 public class MyTemplateResource extends TemplateResourceBase {
 
     private final CodeFile file;
-    private final String id;
 
-    public MyTemplateResource(String id, CodeFile file) {
-        this.id = id;
+    public MyTemplateResource(CodeFile file) {
+        if (file == null) throw new IllegalArgumentException("file should not be null");
         this.file = file;
     }
 
@@ -40,7 +40,7 @@ public class MyTemplateResource extends TemplateResourceBase {
      */
     @Override
     public Object getKey() {
-        return id + "." + file.filename;
+        return file.filename;
     }
 
     /**

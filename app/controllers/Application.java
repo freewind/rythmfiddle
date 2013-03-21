@@ -1,31 +1,23 @@
 package controllers;
 
 import com.greenlaw110.rythm.utils.S;
+import common.CodeManager;
 import common.Helper;
 import models.Code;
 import models.CodeFile;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import play.Play;
 import play.mvc.Controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.*;
 
 public class Application extends Controller {
-
-    private static final File DATA = Play.getFile("data");
-
-    static {
-        DATA.mkdirs();
-    }
-
 
     public static void index() {
         render();
@@ -56,15 +48,13 @@ public class Application extends Controller {
     }
 
     public static void load(String id) throws IOException {
-        Code code = loadCode(id);
-        renderJSON(code);
+        renderJSON(CodeManager.findById(id));
     }
 
-    public static void delete(String body) {
+    public static void delete(String body) throws IOException {
         String id = (String) Helper.parseJson(body).get("id");
         if (S.notEmpty(id)) {
-            File file = getCodeFile(id);
-            file.delete();
+            CodeManager.deleteById(id);
         }
         ok();
     }
@@ -73,34 +63,21 @@ public class Application extends Controller {
         checkLogin();
         Code code = Helper.parse2code(body);
 
-        String targetId = code.isNew() ? Helper.nextUUID() : code.id;
-        code.id = targetId;
-        File target = Play.getFile("data/" + targetId + ".json");
-        FileUtils.writeStringToFile(target, code.toJson());
-
+        CodeManager.saveOrUpdate(code);
         renderJSON(code);
     }
 
     public static void list() throws IOException {
         List<Map> codes = new ArrayList();
-        for (String filename : DATA.list()) {
-            if (filename.endsWith(".json")) {
-                String id = StringUtils.substringBeforeLast(filename, ".json");
-                Code code = loadCode(id);
-                Map<String, String> map = new HashMap();
-                map.put("id", code.id);
-                map.put("desc", code.desc);
-                codes.add(map);
-            }
+        for (Code code : CodeManager.getAll().values()) {
+            Map<String, String> map = new HashMap();
+            map.put("id", code.id);
+            map.put("desc", code.desc);
+            codes.add(map);
         }
         renderJSON(codes);
     }
 
-    private static Code loadCode(String id) throws IOException {
-        File file = getCodeFile(id);
-        String content = FileUtils.readFileToString(file, "UTF-8");
-        return Helper.parse2code(content);
-    }
 
     // just use the simplest solution for login
     public static void login(String body) throws IOException {
@@ -131,10 +108,6 @@ public class Application extends Controller {
             map.put(items[0], items[1]);
         }
         return map;
-    }
-
-    private static File getCodeFile(String id) {
-        return new File(DATA, id + ".json");
     }
 
     public static void current() {

@@ -8,21 +8,12 @@ import com.greenlaw110.rythm.resource.TemplateResourceManager;
 import models.Code;
 import models.CodeFile;
 
-import static org.apache.commons.lang.StringUtils.endsWith;
-import static org.apache.commons.lang.StringUtils.substringAfter;
-
 /**
  * User: freewind
  * Date: 13-3-20
  * Time: 下午1:38
  */
 public class MyTemplateResourceLoader implements ITemplateResourceLoader {
-
-    private final Code code;
-
-    public MyTemplateResourceLoader(Code code) {
-        this.code = code;
-    }
 
 
     /**
@@ -33,9 +24,8 @@ public class MyTemplateResourceLoader implements ITemplateResourceLoader {
      */
     @Override
     public ITemplateResource load(String path) {
-        // path pattern: codeId.filename
-        String filename = substringAfter(path, ".");
-        return new MyTemplateResource(code.id, code.findCodeFile(filename));
+        Code code = (Code) Code.rythm.renderSettings.userContext().get("code");
+        return new MyTemplateResource(code.findCodeFile(path));
     }
 
     /**
@@ -48,8 +38,10 @@ public class MyTemplateResourceLoader implements ITemplateResourceLoader {
      */
     @Override
     public TemplateClass tryLoadTemplate(String tmplName, RythmEngine engine, TemplateClass callerTemplateClass) {
+        Code code = (Code) engine.renderSettings.userContext().get("code");
         CodeFile codeFile = code.findCodeFile(tmplName);
-        return new TemplateClass(new MyTemplateResource(code.id, codeFile), engine, true);
+        if (codeFile == null) return null;
+        return new TemplateClass(new MyTemplateResource(codeFile), engine, true);
     }
 
     /**
@@ -74,8 +66,11 @@ public class MyTemplateResourceLoader implements ITemplateResourceLoader {
      */
     @Override
     public void scan(String root, TemplateResourceManager manager) {
-        for (CodeFile file : code.files) {
-            manager.resourceLoaded(new MyTemplateResource(code.id, file));
+        for (Code code : CodeManager.getAll().values()) {
+            for (CodeFile file : code.files) {
+                manager.resourceLoaded(new MyTemplateResource(file));
+            }
         }
     }
+
 }

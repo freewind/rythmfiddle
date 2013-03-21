@@ -21,26 +21,35 @@ import static common.Helper.eq;
  */
 public class Code {
 
+    public static RythmEngine rythm;
+
     public String id;
     public String desc;
     public String params;
     public List<CodeFile> files;
+
+    public static void initRythmEngine() {
+        Map<String, Object> conf = new HashMap();
+        conf.put("resource.loader", new MyTemplateResourceLoader());
+        conf.put("sandbox.timeout", 100000000);
+        rythm = new RythmEngine(conf);
+        // rythm.resourceManager().scan(null);
+    }
 
     public boolean isNew() {
         return S.empty(id);
     }
 
     public String render() throws IOException {
-        Map<String, Object> conf = new HashMap();
-        conf.put("resource.loader", new MyTemplateResourceLoader(this));
-        RythmEngine rythm = new RythmEngine(conf);
-        rythm.resourceManager().scan(null);
         CodeFile main = getMainCodeFile();
-        File file = new File(id + "." + main.filename);
+        // FIXME? Is it correct to use a file? (which will make rythm use FileTemplateResource)
+        File file = new File(main.filename);
+        Map<String, Object> context = new HashMap();
+        context.put("code", this);
         if (S.notEmpty(params)) {
-            return rythm.sandbox().render(file, JSONWrapper.wrap(params));
+            return rythm.sandbox(context).render(file, JSONWrapper.wrap(params));
         } else {
-            return rythm.sandbox().render(file);
+            return rythm.sandbox(context).render(file);
         }
     }
 
