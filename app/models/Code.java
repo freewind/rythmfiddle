@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
-import common.MyTemplateResourceLoader;
+import play.mvc.Scope;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,22 +25,26 @@ public class Code {
     public String desc;
     public String params;
     public List<CodeFile> files;
-
+    public static RythmEngine engine; static {
+//        Map<String, Object> conf = new HashMap();
+//        conf.put("resource.loader", new MyTemplateResourceLoader(this));
+//        engine = new RythmEngine(conf);
+    }
+    
     public boolean isNew() {
         return S.empty(id);
     }
 
     public String render() throws IOException {
-        Map<String, Object> conf = new HashMap();
-        conf.put("resource.loader", new MyTemplateResourceLoader(this));
-        RythmEngine rythm = new RythmEngine(conf);
-        rythm.resourceManager().scan(null);
+        engine.resourceManager().scan(null);
         CodeFile main = getMainCodeFile();
         File file = new File(id + "." + main.filename);
+        Map<String, Object> ctx = new HashMap<String, Object>();
+        ctx.put("sessionid", Scope.Session.current().getId());
         if (S.notEmpty(params)) {
-            return rythm.sandbox().render(file, JSONWrapper.wrap(params));
+            return engine.sandbox(ctx).render(file, JSONWrapper.wrap(params));
         } else {
-            return rythm.sandbox().render(file);
+            return engine.sandbox(ctx).render(file);
         }
     }
 
