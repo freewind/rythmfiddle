@@ -1,12 +1,14 @@
 package models;
 
 import com.google.gson.Gson;
+import com.greenlaw110.play.SessionCache;
+import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.RythmEngine;
+import com.greenlaw110.rythm.extension.ICodeType;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
 import play.mvc.Scope;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -25,26 +27,41 @@ public class Code {
     public String desc;
     public String params;
     public List<CodeFile> files;
-    public static RythmEngine engine; static {
-//        Map<String, Object> conf = new HashMap();
-//        conf.put("resource.loader", new MyTemplateResourceLoader(this));
-//        engine = new RythmEngine(conf);
-    }
-    
+
     public boolean isNew() {
         return S.empty(id);
     }
 
+    private static final Object lock = new Object();
+
+    private static final Map<String, RythmEngine> engines = new HashMap<String, RythmEngine>();
+    
+    private RythmEngine engine() {
+        String sessId = Scope.Session.current().getId();
+        synchronized (lock) {
+            RythmEngine e = engines.get(sessId);
+            if (null == e) {
+                Map<String, Object> conf = new HashMap<String, Object>();
+                conf.put("resource.loader", new InMemoryResourceLoader(sessId));
+                conf.put("default.code_type", ICodeType.DefImpl.HTML);
+                conf.put("engine.mode", Rythm.Mode.dev);
+                e = new RythmEngine(conf);
+                engines.put(sessId, e);
+            }
+            return e;
+        }
+    }
+
     public String render() throws IOException {
-        engine.resourceManager().scan(null);
         CodeFile main = getMainCodeFile();
-        File file = new File(id + "." + main.filename);
-        Map<String, Object> ctx = new HashMap<String, Object>();
-        ctx.put("sessionid", Scope.Session.current().getId());
+        // FIXME? Is it correct to use a file? (which will make rythm use FileTemplateResource)
+        Map<String, Object> context = new HashMap();
+        context.put("session-id", Scope.Session.current().getId());
+        RythmEngine rythm = engine();
         if (S.notEmpty(params)) {
-            return engine.sandbox(ctx).render(file, JSONWrapper.wrap(params));
+            return rythm.sandbox(context).render(main.getKey(), JSONWrapper.wrap(params));
         } else {
-            return engine.sandbox(ctx).render(file);
+            return rythm.sandbox(context).render(main.getKey());
         }
     }
 
@@ -75,6 +92,12 @@ public class Code {
             }
         }
         return null;
+    }
+    
+    public void save(String sessionId) {
+        for (CodeFile file: files) {
+            file.save(sessionId);
+        }
     }
 }
 
