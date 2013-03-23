@@ -35,7 +35,7 @@
                         </button>
                     </span>
                     <span ng-hide="file.editing">
-                        <a href="#" ng-click="switchFile(file)">{{file.filename}}</a>
+                        <a href="#" ng-click="switchFile(file)">Template [{{file.filename}}]</a>
                         <i class="icon-heart" ng-show="file.isMain" style="color: #da4f49" title="This is entry template"> </i>
                     </span>
                     <span ng-hide="file.editing || !hover">
@@ -65,7 +65,7 @@
                               ng-model="currentFile.source" ui-keypress="{'ctrl-enter':'run($event)'}"> ></textarea>
                 </div>
             </form>
-            <div class="alert alert-info">Rythm template (You can use <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument types)
+            <div class="alert alert-info">Note: you can use <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument types
             </div>
         </div>
         <div class="span4" id="RESULT_PANEL">
