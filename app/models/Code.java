@@ -1,12 +1,14 @@
 package models;
 
 import com.google.gson.Gson;
+import com.greenlaw110.play.SessionCache;
+import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.RythmEngine;
+import com.greenlaw110.rythm.extension.ICodeType;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
-import common.MyTemplateResourceLoader;
+import play.mvc.Scope;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -21,35 +23,45 @@ import static common.Helper.eq;
  */
 public class Code {
 
-    public static RythmEngine rythm;
-
     public String id;
     public String desc;
     public String params;
     public List<CodeFile> files;
 
-    public static void initRythmEngine() {
-        Map<String, Object> conf = new HashMap();
-        conf.put("resource.loader", new MyTemplateResourceLoader());
-        conf.put("sandbox.timeout", 100000000);
-        rythm = new RythmEngine(conf);
-        // rythm.resourceManager().scan(null);
-    }
-
     public boolean isNew() {
         return S.empty(id);
+    }
+
+    private static final Object lock = new Object();
+
+    private static final Map<String, RythmEngine> engines = new HashMap<String, RythmEngine>();
+    
+    private RythmEngine engine() {
+        String sessId = Scope.Session.current().getId();
+        synchronized (lock) {
+            RythmEngine e = engines.get(sessId);
+            if (null == e) {
+                Map<String, Object> conf = new HashMap<String, Object>();
+                conf.put("resource.loader", new InMemoryResourceLoader(sessId));
+                conf.put("default.code_type", ICodeType.DefImpl.HTML);
+                conf.put("engine.mode", Rythm.Mode.dev);
+                e = new RythmEngine(conf);
+                engines.put(sessId, e);
+            }
+            return e;
+        }
     }
 
     public String render() throws IOException {
         CodeFile main = getMainCodeFile();
         // FIXME? Is it correct to use a file? (which will make rythm use FileTemplateResource)
-        File file = new File(main.filename);
         Map<String, Object> context = new HashMap();
-        context.put("code", this);
+        context.put("session-id", Scope.Session.current().getId());
+        RythmEngine rythm = engine();
         if (S.notEmpty(params)) {
-            return rythm.sandbox(context).render(file, JSONWrapper.wrap(params));
+            return rythm.sandbox(context).render(main.getKey(), JSONWrapper.wrap(params));
         } else {
-            return rythm.sandbox(context).render(file);
+            return rythm.sandbox(context).render(main.getKey());
         }
     }
 
@@ -80,6 +92,12 @@ public class Code {
             }
         }
         return null;
+    }
+    
+    public void save(String sessionId) {
+        for (CodeFile file: files) {
+            file.save(sessionId);
+        }
     }
 }
 

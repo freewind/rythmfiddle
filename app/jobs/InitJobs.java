@@ -1,11 +1,8 @@
 package jobs;
 
 import common.CodeManager;
-import models.Code;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-
-import java.io.IOException;
 
 /**
  * User: freewind
@@ -22,6 +19,6 @@ public class InitJobs extends Job {
     public void doJob() throws Exception {
         CodeManager.CODE_ROOT.mkdirs();
         CodeManager.reload();
-        Code.initRythmEngine();
+        //Code.initRythmEngine();
     }
 }
