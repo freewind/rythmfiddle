@@ -8,14 +8,13 @@ import models.CodeFile;
 import org.apache.commons.io.FileUtils;
 import play.Play;
 import play.mvc.Controller;
+import play.mvc.Scope;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.commons.lang.StringUtils.*;
 
 public class Application extends Controller {
 
@@ -29,10 +28,10 @@ public class Application extends Controller {
 
     public static void run(String body) throws IOException {
         Code code = Helper.parse2code(body);
-
+        code.save(Scope.Session.current().getId());
         try {
             CodeFile mainCodeFile = code.getMainCodeFile();
-            if (isNotBlank(mainCodeFile.source)) {
+            if (S.notEmpty(mainCodeFile.source)) {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("renderedCode", code.render());
                 renderJSON(map);
