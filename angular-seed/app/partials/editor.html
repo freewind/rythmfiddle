@@ -58,10 +58,6 @@
         </div>
         <div class="span6" id="EDITOR_PANEL">
             <form name="editorForm">
-                <div class="well">Rythm template (You can use `String`,`Double`,`Boolean`, `List&lt;String&gt;`, `List&lt;Double&gt;`,
-                    `List&lt;Boolean&gt;`
-                    as argument types only)
-                </div>
                 <div class="source">
                     <h4>{{currentFile.filename}}</h4>
                     <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
@@ -69,6 +65,8 @@
                               ng-model="currentFile.source" ui-keypress="{'ctrl-enter':'run($event)'}"> ></textarea>
                 </div>
             </form>
+            <div class="alert alert-info">Rythm template (You can use <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument types)
+            </div>
         </div>
         <div class="span4" id="RESULT_PANEL">
             <div>
