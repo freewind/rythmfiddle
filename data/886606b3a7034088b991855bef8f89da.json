@@ -1,1 +1,0 @@
-{"id":"886606b3a7034088b991855bef8f89da","desc":"08. layout and extends","files":[{"filename":"main.html","source":"@extends(layout)\n\n[Inner]","isMain":true},{"filename":"layout.html","source":"--------- layout header --------\n\n@doLayout()\n  \n--------- layout footer --------","isMain":false}]}
