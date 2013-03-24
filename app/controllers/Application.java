@@ -123,4 +123,11 @@ public class Application extends Controller {
         renderText(session.get("username"));
     }
 
+    public static void siteInfo() {
+        Map<String, Object> data = new HashMap();
+        data.put("rythmWebsite", Play.configuration.get("site.rythmWebsite"));
+        data.put("rythmfiddleGithub", Play.configuration.get("site.rythmfiddleGithub"));
+        renderJSON(data);
+    }
+
 }

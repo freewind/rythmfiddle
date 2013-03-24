@@ -38,7 +38,10 @@
                     <li ng-class="{active: currentPath()=='/editor'}"><a href="/editor">Editor</a></li>
                     <li ng-class="{active: currentPath()=='/all_demos'}"><a href="/all_demos">All Demos</a></li>
                     <li>
-                        <a href="http://github.com/freewind/rythmfiddle" target="_blank">Fork me on Github</a>
+                        <a ng-href="{{siteInfo.rythmWebsite}}" target="_blank">Rythm Website</a>
+                    </li>
+                    <li>
+                        <a ng-href="{{siteInfo.rythmfiddleGithub}}" target="_blank">Fork me on Github</a>
                     </li>
                     <li><a href="#" ng-click="showAbout()">About</a></li>
                 </ul>

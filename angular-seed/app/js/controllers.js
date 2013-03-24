@@ -3,9 +3,13 @@
 /* Controllers */
 
 
-function BodyCtrl($scope, $dialog, $location) {
+function BodyCtrl($scope, $dialog, $location, $http) {
+    $scope.siteInfo = {};
     $scope.showAbout = showAbout;
     $scope.currentPath = currentPath;
+
+    getSiteInfo();
+
     function showAbout() {
         $dialog.dialog().open('/templates/partials/about.html', AboutEditor);
     }
@@ -13,8 +17,14 @@ function BodyCtrl($scope, $dialog, $location) {
     function currentPath() {
         return $location.path();
     }
+
+    function getSiteInfo() {
+        $http.get('/api/Application/siteInfo').success(function (data) {
+            $scope.siteInfo = data;
+        });
+    }
 }
-BodyCtrl.$inject = ['$scope', '$dialog', '$location'];
+BodyCtrl.$inject = ['$scope', '$dialog', '$location', '$http'];
 
 function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     $scope.codes = [];
