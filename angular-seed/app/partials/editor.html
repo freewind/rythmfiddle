@@ -60,7 +60,7 @@
         <div class="span6" id="EDITOR_PANEL">
             <form name="editorForm">
                 <div class="source">
-                    <h4>{{currentFile.filename}}</h4>
+                    <h4>Template: [{{currentFile.filename}}]</h4>
                     <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
                               style="height:400px;width:100%" name="codeSource"
                               ng-model="currentFile.source" ui-keypress="{'ctrl-enter':'run($event)'}"> ></textarea>
@@ -74,15 +74,17 @@
         <div class="span4" id="RESULT_PANEL">
             <div>
                 <div>Params (in JSON format)</div>
-                <div class="params">
-                    <textarea ui-codemirror="{theme:'lesser-dark'}" ng-model="currentCode.params" style="height:100px;width:100%" placeholder="Params in Json format"></textarea>
-                </div>
+                <form name="paramsForm">
+                    <div class="params">
+                        <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params" style="height:100px;width:100%" placeholder="Params in Json format"></textarea>
+                    </div>
+                </form>
                 <div class="btn-toolbar">
-                    <button class="btn" ng-click="run()" ng-class="{'btn-primary':editorForm.codeSource.$dirty}">
+                    <button class="btn" ng-click="run()" ng-class="{'btn-primary': highlightRun}">
                         Run
                     </button>
                     <button class="btn" ng-show="current" ng-click="save()"
-                            ng-class="{'btn-primary':editorForm.codeSource.$dirty}">
+                            ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
                         Save
                     </button>
                 </div>

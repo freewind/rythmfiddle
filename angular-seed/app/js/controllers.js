@@ -31,6 +31,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         renderedCode: ''
     }
     $scope.currentFile = $scope.currentCode.files[0];
+    $scope.highlightRun = false;
 
     $scope.run = run;
     $scope.save = save;
@@ -43,6 +44,13 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     $scope.editFileName = editFileName;
     $scope.cancelEditFileName = cancelEditFileName;
 
+    $scope.$watch("currentCode", function (newVal, oldVal) {
+        if (newVal == oldVal) {
+            $scope.highlightRun = false;
+        } else {
+            $scope.highlightRun = true;
+        }
+    }, true);
 
     loadCodeList();
     if ($scope.currentCode.id) {
@@ -124,7 +132,6 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         });
     }
 
-
     function save() {
         var d = $dialog.dialog({
             resolve: {
@@ -141,6 +148,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     function run() {
         $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
             $scope.result = data;
+            $scope.highlightRun = false;
         });
     }
 
