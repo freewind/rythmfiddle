@@ -3,3 +3,5 @@ lib
 *.iml
 *.ipr
 tmp
+data/
+precompiled
