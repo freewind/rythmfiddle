@@ -21,7 +21,7 @@
     <![endif]-->
     <link rel="stylesheet" href="/templates/css/app.css"/>
 </head>
-<body>
+<body ng-controller="BodyCtrl">
 
 <div class="navbar">
     <div class="navbar-inner">
@@ -39,6 +39,12 @@
                 </ul>
                 <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
             </div>
+            <ul class="nav">
+                <li>
+                    <a href="http://github.com/freewind/rythmfiddle" target="_blank">Fork me on Github</a>
+                </li>
+                <li><a href="#" ng-click="showAbout()">About</a></li>
+            </ul>
             <!--/.nav-collapse -->
         </div>
     </div>

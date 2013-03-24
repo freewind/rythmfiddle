@@ -25,6 +25,7 @@
 
             <hr/>
 
+            <div><h5>Templates:</h5></div>
             <ul>
                 <li ng-repeat="file in currentCode.files" ng-class="{file_active: file==currentFile}"
                     ng-mouseenter="hover=true" ng-mouseleave="hover=false">
@@ -39,9 +40,9 @@
                         <i class="icon-heart" ng-show="file.isMain" style="color: #da4f49" title="This is entry template"> </i>
                     </span>
                     <span ng-hide="file.editing || !hover">
-                         <button ng-hide="file.isMain" class="btn btn-small" ng-click="setMain(file)" title="Make this file as entry">
-                             <i class="icon-heart"></i>
-                         </button>
+                        <button ng-hide="file.isMain" class="btn btn-small" ng-click="setMain(file)" title="Make this file as entry">
+                            <i class="icon-heart"></i>
+                        </button>
                         <button class="btn btn-small" ng-click="editFileName(file)" title="edit">
                             <i class="icon-edit"></i>
                         </button>
@@ -65,7 +66,9 @@
                               ng-model="currentFile.source" ui-keypress="{'ctrl-enter':'run($event)'}"> ></textarea>
                 </div>
             </form>
-            <div class="alert alert-info">Note: you can use <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument types
+            <div class="alert alert-info">Note: you can use
+                <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument
+                types
             </div>
         </div>
         <div class="span4" id="RESULT_PANEL">
