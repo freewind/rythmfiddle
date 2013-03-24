@@ -60,7 +60,7 @@
         <div class="span6" id="EDITOR_PANEL">
             <form name="editorForm">
                 <div class="source">
-                    <h4>{{currentFile.filename}}</h4>
+                    <h4>Template [{{currentFile.filename}}]</h4>
                     <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
                               style="height:400px;width:100%" name="codeSource"
                               ng-model="currentFile.source" ui-keypress="{'ctrl-enter':'run($event)'}"> ></textarea>
