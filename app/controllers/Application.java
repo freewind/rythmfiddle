@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.gson.Gson;
 import com.greenlaw110.rythm.utils.S;
 import common.CodeManager;
 import common.Helper;
@@ -77,16 +78,19 @@ public class Application extends Controller {
         renderJSON(codes);
     }
 
+    public static class Credential {
+        public String username;
+        public String password; 
+    }
 
     // just use the simplest solution for login
     public static void login(String body) throws IOException {
-        Map<String, Object> map = Helper.parseJson(body);
-        String username = (String) map.get("username");
-        String password = (String) map.get("password");
+        //Map<String, Object> map = Helper.parseJson(body);
+        Credential login = new Gson().fromJson(body, Credential.class);
 
         Map<String, String> accounts = getAccounts();
-        if (S.notEmpty(username) && S.eq(accounts.get(username), password)) {
-            session.put("username", username);
+        if (S.notEmpty(login.username) && S.eq(accounts.get(login.username), login.password)) {
+            session.put("username", login.username);
             renderJSON("{}");
         }
         renderJSON("{\"error\": \"Invalid username or password\"}");

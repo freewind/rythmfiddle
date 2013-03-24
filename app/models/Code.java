@@ -1,10 +1,11 @@
 package models;
 
 import com.google.gson.Gson;
-import com.greenlaw110.play.SessionCache;
 import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.extension.ICodeType;
+import com.greenlaw110.rythm.sandbox.RythmSecurityManager;
+import com.greenlaw110.rythm.sandbox.SandboxThreadFactory;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
 import play.mvc.Scope;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static common.Helper.eq;
 
@@ -35,6 +37,10 @@ public class Code {
     private static final Object lock = new Object();
 
     private static final Map<String, RythmEngine> engines = new HashMap<String, RythmEngine>();
+
+    private static final String sandboxPassword = UUID.randomUUID().toString();
+    private static final RythmSecurityManager rsm = new RythmSecurityManager(null, sandboxPassword, null);
+    private static final SandboxThreadFactory stf = new SandboxThreadFactory(rsm, sandboxPassword, null);
     
     private RythmEngine engine() {
         String sessId = Scope.Session.current().getId();
@@ -45,6 +51,8 @@ public class Code {
                 conf.put("resource.loader", new InMemoryResourceLoader(sessId));
                 conf.put("default.code_type", ICodeType.DefImpl.HTML);
                 conf.put("engine.mode", Rythm.Mode.dev);
+                conf.put("sandbox.security_manager", rsm);
+                conf.put("sandbox.thread_factory", stf);
                 e = new RythmEngine(conf);
                 engines.put(sessId, e);
             }
