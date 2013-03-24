@@ -3,19 +3,13 @@
 /* Controllers */
 
 
-function MyCtrl1() {
+function BodyCtrl($scope, $dialog) {
+    $scope.showAbout = showAbout;
+    function showAbout() {
+        $dialog.dialog().open('/templates/partials/about.html', AboutEditor);
+    }
 }
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2() {
-}
-MyCtrl2.$inject = [];
-
-function IndexCtrl($scope) {
-
-}
-IndexCtrl.$inject = ['$scope'];
+BodyCtrl.$inject = ['$scope', '$dialog'];
 
 function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     $scope.codes = [];
@@ -48,6 +42,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     $scope.setMain = setMain;
     $scope.editFileName = editFileName;
     $scope.cancelEditFileName = cancelEditFileName;
+
 
     loadCodeList();
     if ($scope.currentCode.id) {
@@ -159,6 +154,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         };
         $scope.currentCode.files.push($scope.currentFile);
     }
+
 }
 EditorCtrl.$inject = ['$scope', '$http', '$routeParams', '$dialog', '$location'];
 
@@ -198,3 +194,10 @@ function LoginCtrl($rootScope, $scope, $location, $http) {
     }
 }
 LoginCtrl.$inject = ['$rootScope', '$scope', '$location', '$http'];
+
+function AboutEditor($scope, dialog) {
+    $scope.close = function () {
+        dialog.close();
+    }
+}
+AboutEditor.$inject = ['$scope', 'dialog'];
