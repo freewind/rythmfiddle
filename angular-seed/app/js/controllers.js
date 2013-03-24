@@ -3,13 +3,18 @@
 /* Controllers */
 
 
-function BodyCtrl($scope, $dialog) {
+function BodyCtrl($scope, $dialog, $location) {
     $scope.showAbout = showAbout;
+    $scope.currentPath = currentPath;
     function showAbout() {
         $dialog.dialog().open('/templates/partials/about.html', AboutEditor);
     }
+
+    function currentPath() {
+        return $location.path();
+    }
 }
-BodyCtrl.$inject = ['$scope', '$dialog'];
+BodyCtrl.$inject = ['$scope', '$dialog', '$location'];
 
 function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     $scope.codes = [];
@@ -17,6 +22,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         id: $routeParams.id,
         desc: null,
         params: null,
+        showInMenu: false,
         files: [
             {
                 filename: "main.html",
@@ -127,7 +133,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     }
 
     function loadCodeList() {
-        $http.get('/api/Application/list').success(function (data) {
+        $http.get('/api/Application/list?showInMenu=true').success(function (data) {
             $scope.codes = data;
         });
     }
@@ -139,9 +145,11 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
             }
         });
         d.open('/templates/partials/save_dialog.html', SaveDialogCtrl).then(function (code) {
-            $scope.editorForm.codeSource.$dirty = false;
-            loadCodeList();
-            $location.path('/editor/' + code.id);
+            if (code) {
+                $scope.editorForm.codeSource.$dirty = false;
+                loadCodeList();
+                $location.path('/editor/' + code.id);
+            }
         });
     }
 
@@ -209,3 +217,15 @@ function AboutEditor($scope, dialog) {
     }
 }
 AboutEditor.$inject = ['$scope', 'dialog'];
+
+function AllDemoCtrl($scope, $http) {
+    $scope.allDemos = [];
+    loadAll();
+
+    function loadAll() {
+        $http.get('/api/Application/list').success(function (data) {
+            $scope.allDemos = data;
+        })
+    }
+}
+AllDemoCtrl.$inject = ['$scope', '$http']

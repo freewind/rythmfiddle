@@ -7,6 +7,10 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
             templateUrl: '/templates/partials/editor.html',
             controller: EditorCtrl
         });
+        $routeProvider.when('/all_demos', {
+            templateUrl: '/templates/partials/all_demos.html',
+            controller: AllDemoCtrl
+        });
         $routeProvider.when('/editor/:id', {
             templateUrl: '/templates/partials/editor.html',
             controller: EditorCtrl
@@ -14,7 +18,7 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
         $routeProvider.when('/login', {
             templateUrl: '/templates/partials/login.html',
             controller: LoginCtrl
-        })
+        });
         $routeProvider.otherwise({redirectTo: '/editor'});
         $locationProvider.html5Mode(true);
     }]).

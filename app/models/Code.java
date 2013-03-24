@@ -29,6 +29,7 @@ public class Code {
     public String desc;
     public String params;
     public List<CodeFile> files;
+    public boolean showInMenu;
 
     public boolean isNew() {
         return S.empty(id);
@@ -41,7 +42,7 @@ public class Code {
     private static final String sandboxPassword = UUID.randomUUID().toString();
     private static final RythmSecurityManager rsm = new RythmSecurityManager(null, sandboxPassword, null);
     private static final SandboxThreadFactory stf = new SandboxThreadFactory(rsm, sandboxPassword, null);
-    
+
     private RythmEngine engine() {
         String sessId = Scope.Session.current().getId();
         synchronized (lock) {
@@ -101,9 +102,9 @@ public class Code {
         }
         return null;
     }
-    
+
     public void save(String sessionId) {
-        for (CodeFile file: files) {
+        for (CodeFile file : files) {
             file.save(sessionId);
         }
     }

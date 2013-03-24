@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span4 offset4">
+            <ul>
+                <li ng-repeat="code in allDemos | orderBy:'desc' ">
+                    <a ng-href="/editor/{{code.id}}">{{code.desc}}</a>
+                    <span ng-show="code.showInMenu">
+                        <i style="color: #da4f49" class="icon-heart" title="Show in front"> </i></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

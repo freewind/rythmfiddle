@@ -35,16 +35,15 @@
             <a class="brand" href="/">Rythm Fiddle</a>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#">Editor</a></li>
+                    <li ng-class="{active: currentPath()=='/editor'}"><a href="/editor">Editor</a></li>
+                    <li ng-class="{active: currentPath()=='/all_demos'}"><a href="/all_demos">All Demos</a></li>
+                    <li>
+                        <a href="http://github.com/freewind/rythmfiddle" target="_blank">Fork me on Github</a>
+                    </li>
+                    <li><a href="#" ng-click="showAbout()">About</a></li>
                 </ul>
                 <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
             </div>
-            <ul class="nav">
-                <li>
-                    <a href="http://github.com/freewind/rythmfiddle" target="_blank">Fork me on Github</a>
-                </li>
-                <li><a href="#" ng-click="showAbout()">About</a></li>
-            </ul>
             <!--/.nav-collapse -->
         </div>
     </div>

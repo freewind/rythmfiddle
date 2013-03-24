@@ -67,20 +67,26 @@ public class Application extends Controller {
         renderJSON(code);
     }
 
-    public static void list() throws IOException {
+    /**
+     * @param showInMenu if is null, return all, otherwise return matched
+     */
+    public static void list(Boolean showInMenu) throws IOException {
         List<Map> codes = new ArrayList();
         for (Code code : CodeManager.getAll().values()) {
-            Map<String, String> map = new HashMap();
+            Map<String, Object> map = new HashMap();
             map.put("id", code.id);
             map.put("desc", code.desc);
-            codes.add(map);
+            map.put("showInMenu", code.showInMenu);
+            if (showInMenu == null || showInMenu == code.showInMenu) {
+                codes.add(map);
+            }
         }
         renderJSON(codes);
     }
 
     public static class Credential {
         public String username;
-        public String password; 
+        public String password;
     }
 
     // just use the simplest solution for login
