@@ -83,7 +83,7 @@ var href = window.location.href;
 var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href);
 _trigger_parent("_resize", {h: window.document.body.offsetHeight, id: m[1]});
 };
-_resize();
+setTimeout(window._resize, 300);
 });
 </script>
 
