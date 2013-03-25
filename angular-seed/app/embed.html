@@ -70,11 +70,13 @@ window._trigger_parent = function(evt, data) {
         // not embedded
         return;
     } else {
-        $(document).trigger(e, data);
+        $(document).trigger(evt, data);
     }
 };
 window._resize = function(){
-_trigger_parent("_resize", {h: window.document.body.offsetHeight});
+var href = window.location.href;
+var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href);
+_trigger_parent("_resize", {h: window.document.body.offsetHeight, id: m[1]});
 };
 _resize();
 });
