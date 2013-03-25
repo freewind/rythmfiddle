@@ -15,6 +15,10 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
             templateUrl: '/templates/partials/editor.html',
             controller: EditorCtrl
         });
+        $routeProvider.when('/embed/:id', {
+            templateUrl: '/templates/partials/embed.html',
+            controller: EditorCtrl
+        });
         $routeProvider.when('/login', {
             templateUrl: '/templates/partials/login.html',
             controller: LoginCtrl

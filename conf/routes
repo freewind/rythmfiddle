@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                                       Application.angularIndex
+GET     /embed/{id}                             Application.embedIndex
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

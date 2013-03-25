@@ -38,7 +38,8 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
                 filename: "main.html",
                 source: "",
                 isMain: true,
-                editing: false
+                editing: false,
+                active: true
             }
         ]
     };
@@ -46,8 +47,8 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         error: '',
         renderedCode: ''
     }
-    $scope.currentFile = $scope.currentCode.files[0];
     $scope.highlightRun = false;
+    $scope.toRun = false;
 
     $scope.run = run;
     $scope.save = save;
@@ -59,6 +60,9 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     $scope.setMain = setMain;
     $scope.editFileName = editFileName;
     $scope.cancelEditFileName = cancelEditFileName;
+    $scope.getActiveFile = getActiveFile;
+    $scope.getMainFile = getMainFile;
+
 
     $scope.$watch("currentCode", function (newVal, oldVal) {
         if (newVal == oldVal) {
@@ -68,13 +72,35 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         }
     }, true);
 
+    $scope.$watch("toRun", function (val) {
+        if (val) {
+            $scope.toRun = false;
+            $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
+                $scope.result = data;
+                $scope.highlightRun = false;
+            });
+        }
+    });
+
     loadCodeList();
     if ($scope.currentCode.id) {
         $http.get('/api/Application/load?id=' + $scope.currentCode.id).success(function (data) {
             $scope.currentCode = data;
-            $scope.currentFile = data.files[0];
+            getMainFile().active = true;
             $scope.run();
         });
+    }
+
+    function getMainFile() {
+        return _.find($scope.currentCode.files, function (file) {
+            return file.isMain === true;
+        });
+    }
+
+    function getActiveFile() {
+        return _.find($scope.currentCode.files, function (f) {
+            return f.active === true;
+        })
     }
 
     function setMain(file) {
@@ -85,14 +111,17 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     }
 
     function switchFile(file) {
-        $scope.currentFile = file;
+        _.each($scope.currentCode.files, function (f) {
+            f.active = false;
+        });
+        file.active = true;
     }
 
     function removeFile(file) {
         if (confirm('Delete this template?')) {
             $scope.currentCode.files = _.without($scope.currentCode.files, file);
-            if ($scope.currentCode.files.length == 0) {
-                $scope.currentFile = null;
+            if (file.isMain && $scope.currentCode.files.length > 0) {
+                $scope.currentCode.files[0].isMain = true;
             }
         }
     }
@@ -120,7 +149,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
 
     function editFileName(file) {
         file.editName = file.filename;
-        file.editing = true;
+        file.editing = !file.editing;
     }
 
     function cancelEditFileName(file) {
@@ -164,21 +193,22 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     }
 
     function run() {
-        $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
-            $scope.result = data;
-            $scope.highlightRun = false;
-        });
+        $scope.toRun = true;
     }
 
     function newFile() {
-        var oriCount = $scope.currentCode.files.length;
-        $scope.currentFile = {
+        var newOne = {
             filename: '',
             source: '',
-            isMain: oriCount === 0,
-            editing: true
+            isMain: false,
+            editing: true,
+            active: true
         };
-        $scope.currentCode.files.push($scope.currentFile);
+        $scope.currentCode.files.push(newOne);
+        switchFile(newOne);
+        if (!getMainFile()) {
+            newOne.isMain = true;
+        }
     }
 
 }

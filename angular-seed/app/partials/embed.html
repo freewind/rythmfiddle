@@ -1,0 +1,57 @@
+<form name="editorForm">
+    <div class="source">
+        <div class="pull-right">
+            <button class="btn" title="Add new template" ng-click="newFile()">
+                <i class="icon-plus"></i>
+            </button>
+            <button class="btn" title="Edit current template" ng-click="editFileName(getActiveFile())">
+                <i class="icon-edit"></i>
+            </button>
+            <button class="btn" title="Edit current template" ng-click="removeFile(getActiveFile())">
+                <i class="icon-remove"></i>
+            </button>
+            <button class="btn" title="Edit current template" ng-click="setMain(getActiveFile())"
+                    ng-hide="getActiveFile().isMain">
+                <i class="icon-heart"></i>
+            </button>
+        </div>
+        <tabs>
+            <pane ng-repeat="file in currentCode.files" active="file.active"
+                  heading="{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
+                <div ng-show="file.editing">
+                        <span>
+                            <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
+                            <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i>
+                            </button>
+                            <button class="btn btn-small" ng-click="cancelEditFileName(file)">
+                                <i class="icon-remove"></i>
+                            </button>
+                        </span>
+                </div>
+                <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
+                          style="height:200px;width:100%" name="codeSource" ui-refresh="file.active"
+                          ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"
+                        ></textarea>
+            </pane>
+            <pane heading="Result" active="$parent.toRun">
+                <button class="btn pull-right" ng-click="run()">Run again</button>
+                <div ng-show="result.error">
+                    <pre class="template_error">{{result.error}}</pre>
+                </div>
+                <div ng-hide="result.error">
+                    <pre>{{result.renderedCode}}</pre>
+                </div>
+            </pane>
+        </tabs>
+    </div>
+</form>
+<form name="paramsForm">
+    <div class="params">
+        <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
+                  placeholder="Params in Json format"></textarea>
+    </div>
+</form>
+<div class="alert alert-info">Note: you can use
+    <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument
+    types
+</div>

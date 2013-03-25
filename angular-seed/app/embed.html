@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <title>Rythm Fiddle</title>
+    <!--[if lte IE 8]>
+    <script>
+        // The ieshiv takes care of our ui.directives, bootstrap module directives and
+        // AngularJS's ng-view, ng-include, ng-pluralize and ng-switch directives.
+        // However, IF you have custom directives (yours or someone else's) then
+        // enumerate the list of tags in window.myCustomTags
+
+        window.myCustomTags = [ 'yourDirective', 'somebodyElsesDirective' ]; // optional
+    </script>
+    <script src="/public/libs/angular-ui-0.3.2/angular-ui-ieshiv.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/public/libs/bootstrap-2.1.1/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/public/libs/font-awesome/3.0/css/font-awesome.css"/>
+    <!--[if IE 7]>
+    <link rel="stylesheet" type="text/css" href="/public/libs/font-awesome/3.0/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <link rel="stylesheet" href="/templates/css/app.css"/>
+    <style type="text/css">
+        .params .CodeMirror {
+            height: 100px;
+        }
+
+        .source .CodeMirror {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<div ng-view></div>
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+-->
+<script src="/public/libs/jquery-ui-1.8.24/js/jquery-1.8.2.min.js" charset="utf-8"></script>
+<script src="/public/libs/underscore/1.4.3/underscore.min.js" charset="utf-8"></script>
+<script src="/public/libs/bootstrap-2.1.1/js/bootstrap.min.js" charset="utf-8"></script>
+<script src="/templates/lib/angular/angular.js"></script>
+<script src="/public/libs/angular-ui/0.4.0/angular-ui.js" charset="utf-8"></script>
+<script src="/public/libs/bootstrap-ui/0.2.0/ui-bootstrap-0.2.0.js" charset="utf-8"></script>
+<script src="/public/libs/bootstrap-ui/0.2.0/ui-bootstrap-tpls-0.2.0.js" charset="utf-8"></script>
+<script src="/public/libs/jsbeautier/beautify.js" charset="utf-8"></script>
+<script src="/public/libs/codemirror/3.1/lib/codemirror.js" charset="utf-8"></script>
+<script src="/public/libs/codemirror/3.1/mode/clike/clike.js" charset="utf-8"></script>
+<script src="/templates/js/app.js"></script>
+<script src="/templates/js/services.js"></script>
+<script src="/templates/js/controllers.js"></script>
+<script src="/templates/js/filters.js"></script>
+<script src="/templates/js/directives.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/public/libs/angular-ui/0.4.0/angular-ui.css">
+<link rel="stylesheet" type="text/css" href="/public/libs/codemirror/3.1/lib/codemirror.css"/>
+<link rel="stylesheet" type="text/css" href="/public/libs/codemirror/3.1/theme/lesser-dark.css"/>
+</body>
+</html>

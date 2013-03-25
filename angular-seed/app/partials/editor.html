@@ -27,10 +27,10 @@
 
             <div><h5>Templates:</h5></div>
             <ul>
-                <li ng-repeat="file in currentCode.files" ng-class="{file_active: file==currentFile}"
+                <li ng-repeat="file in currentCode.files" ng-class="{file_active: file.active}"
                     ng-mouseenter="hover=true" ng-mouseleave="hover=false">
                     <span ng-show="file.editing">
-                        <input type="text" class="input input-small" ng-model="file.editName"/>
+                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
                         <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i></button>
                         <button class="btn btn-small" ng-click="cancelEditFileName(file)"><i class="icon-remove"></i>
                         </button>
@@ -52,18 +52,22 @@
                     </span>
                 </li>
             </ul>
-            <button class="btn btn-small" ng-click="newFile()">
-                <i class="icon-plus"> </i>
-                &nbsp;&nbsp;New file ...
-            </button>
+            <div class="btn-toolbar">
+                <button class="btn btn-small" ng-click="newFile()">
+                    <i class="icon-plus"> </i>
+                    &nbsp;&nbsp;New file ...
+                </button>
+                <a ng-show="currentCode.id" class="btn btn-small" ng-href="/embed/{{currentCode.id}}"
+                   title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i></a>
+            </div>
         </div>
         <div class="span6" id="EDITOR_PANEL">
             <form name="editorForm">
                 <div class="source">
-                    <h4>Template: [{{currentFile.filename}}]</h4>
+                    <h4>Template: [{{getActiveFile().filename}}]</h4>
                     <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
-                              style="height:400px;width:100%" name="codeSource"
-                              ng-model="currentFile.source" ui-keypress="{'ctrl-enter':'run($event)'}"> ></textarea>
+                              name="codeSource" ng-model="getActiveFile().source" ui-keypress="{'ctrl-enter':'run($event)'}">
+                        ></textarea>
                 </div>
             </form>
             <div class="alert alert-info">Note: you can use
@@ -76,7 +80,8 @@
                 <div>Params (in JSON format)</div>
                 <form name="paramsForm">
                     <div class="params">
-                        <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params" style="height:100px;width:100%" placeholder="Params in Json format"></textarea>
+                        <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
+                                  placeholder="Params in Json format"></textarea>
                     </div>
                 </form>
                 <div class="btn-toolbar">
