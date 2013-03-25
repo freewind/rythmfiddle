@@ -65,6 +65,9 @@
 <script src="/templates/js/directives.js"></script>
 <script>
 $(function(){
+@// see http://stackoverflow.com/questions/5183684/cross-domain-javascript-code-with-sibling-sub-domains
+@// to beat the cross sub domain issue when passing event from iframe to enclosing page
+document.domain = location.host.replace(/^.*?([^.]+\.[^.]+)$/g,'$1');
 window._trigger_parent = function(evt, data) {
     if (top === window) {
         // not embedded
