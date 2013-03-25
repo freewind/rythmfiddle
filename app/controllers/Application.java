@@ -27,6 +27,10 @@ public class Application extends Controller {
         renderBinary(Play.getFile("angular-seed/app/index.html"));
     }
 
+    public static void embedIndex() {
+        renderBinary(Play.getFile("angular-seed/app/embed.html"));
+    }
+
     public static void run(String body) throws IOException {
         Code code = Helper.parse2code(body);
         code.save(Scope.Session.current().getId());
