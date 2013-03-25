@@ -26,11 +26,23 @@
         }
 
         .source .CodeMirror {
-            height: 300px;
+            min-height: 200px;
+            height: 100%;
         }
+        
+        .embedded .nav.nav-tabs {border-bottom: none;margin-bottom: 0;}
+        .embedded .nav.nav-tabs li a {border: none;border-radius: 0;background: transparent;}
+        .embedded .nav.nav-tabs li:not(.active) a:hover {text-decoration: underline;} 
+        .embedded form {margin-bottom: 1px;}
+        .embedded form .toolbar {margin-top: 5px;}
+        .embedded button.btn {background: transparent;border-color: #fff;border-image: none;margin-bottom: -2px;opacity: .5;}
+        .embedded button.btn:hover {opacity: 1;}
+        .embedded .alert.alert-info {background: transparent;font-size: 90%;border:none;}
+        .embedded pre {border-radius: 0;border:0;background-color: #262626;color:#EBEFE7;}
+        .embedded .tab-content {background-color: #262626;}
     </style>
 </head>
-<body>
+<body class="embedded">
 
 <div ng-view></div>
 
