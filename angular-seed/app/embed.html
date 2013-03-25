@@ -84,6 +84,7 @@ var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href);
 _trigger_parent("_resize", {h: window.document.body.offsetHeight, id: m[1]});
 };
 setTimeout(window._resize, 300);
+$(window).resize(function() {_resize();});
 });
 </script>
 
