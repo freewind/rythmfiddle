@@ -71,6 +71,7 @@ window._trigger_parent = function(evt, data) {
         return;
     } else {
         $(document).trigger(evt, data);
+        window.parent.$('body').trigger(evt, data);
     }
 };
 window._resize = function(){
