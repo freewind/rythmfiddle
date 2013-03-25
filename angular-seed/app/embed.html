@@ -64,7 +64,7 @@
 <script src="/templates/js/filters.js"></script>
 <script src="/templates/js/directives.js"></script>
 <script>
-$(function(
+$(function(){
 window._trigger_parent = function(evt, data) {
     if (top === window) {
         // not embedded
@@ -72,12 +72,12 @@ window._trigger_parent = function(evt, data) {
     } else {
         $(document).trigger(e, data);
     }
-}
+};
 window._resize = function(){
 _trigger_parent("_resize", {h: window.document.body.offsetHeight});
-}
+};
 _resize();
-));
+});
 </script>
 
 <link rel="stylesheet" type="text/css" href="/public/libs/angular-ui/0.4.0/angular-ui.css">
