@@ -85,7 +85,8 @@ _trigger_parent("_resize", {h: window.document.body.offsetHeight, id: m[1]});
 };
 setTimeout(window._resize, 300);
 //$(window).resize(_resize);
-$('div.CodeMirror').resize(_resize);
+//$('div.CodeMirror').resize(_resize);
+setInterval(_resize, 1000);
 });
 </script>
 
