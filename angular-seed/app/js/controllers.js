@@ -74,6 +74,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
 
     $scope.$watch("toRun", function (val) {
         if (val) {
+            $scope.toRun = false;
             if ($scope.currentCode.files.length > 0) {
                 $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
                     $scope.result = data;

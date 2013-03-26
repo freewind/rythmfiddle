@@ -1,7 +1,7 @@
 <form name="editorForm">
     <div class="source">
-        <div class="pull-right toolbar">
-            <span ng-hide="toRun">
+        <div class="slight-buttons pull-right toolbar">
+            <span ng-show="getActiveFile()">
                 <span class="btn" title="Add new template" ng-click="newFile()">
                     <i class="icon-plus"></i>
                 </span>
@@ -16,29 +16,12 @@
                     <i class="icon-heart"></i>
                 </span>
             </span>
-            <span ng-show="toRun" class="btn pull-right" ng-click="run()">
+            <span ng-hide="getActiveFile()" class="btn pull-right" ng-click="run()">
                 <i class="icon-play"></i>&nbsp;&nbsp;Run again
             </span>
         </div>
         <tabs>
-            <pane ng-repeat="file in currentCode.files" active="file.active"
-                  heading="<i class='icon-file-alt'></i>&nbsp;{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
-                <div ng-show="file.editing">
-                    <form>
-                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
-                        <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i>
-                        </button>
-                        <span class="btn btn-small" ng-click="cancelEditFileName(file)">
-                            <i class="icon-remove"></i>
-                        </span>
-                    </form>
-                </div>
-                <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
-                          style="height:200px;width:100%" name="codeSource" ui-refresh="file.active"
-                          ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"
-                        ></textarea>
-            </pane>
-            <pane heading="<i class='icon-play'></i>&nbsp;Result" active="$parent.toRun">
+            <pane heading="<i class='icon-eye-open'></i> Result" active="$parent.toRun">
                 <div ng-show="result.error">
                     <pre class="template_error">{{result.error}}</pre>
                 </div>
@@ -46,10 +29,28 @@
                     <pre>{{result.renderedCode}}</pre>
                 </div>
             </pane>
+            <pane ng-repeat="file in currentCode.files" active="file.active"
+                  heading="<i class='icon-file-alt'></i> {{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
+            </pane>
         </tabs>
+        <div ng-show="getActiveFile()">
+            <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
+                <form class="form-inline">
+                    <input type="text" class="input-small" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                    <button class="btn" ng-click="saveFileName(getActiveFile())"><i class="icon-ok"></i>
+                    </button>
+                    <span class="btn" ng-click="cancelEditFileName(getActiveFile())">
+                        <i class="icon-remove"></i>
+                    </span>
+                </form>
+            </div>
+            <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
+                      name="codeSource" ui-refresh="getActiveFile().active"
+                      ng-model="getActiveFile().source" ui-keypress="{'ctrl-enter':'run($event)'}"></textarea>
+        </div>
     </div>
 </form>
-<form name="paramsForm" title="type in JSON parameter here" ng-hide="toRun">
+<form name="paramsForm" title="type in JSON parameter here" ng-show="getActiveFile()">
     <div class="params">
         <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
                   placeholder="Params in Json format"></textarea>
