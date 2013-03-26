@@ -30,7 +30,8 @@
                 <li ng-repeat="file in currentCode.files" ng-class="{file_active: file.active}"
                     ng-mouseenter="hover=true" ng-mouseleave="hover=false">
                     <span ng-show="file.editing">
-                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
+                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"
+                               ui-keypress="{'enter': 'saveFileName(file, $event)'}"/>
                         <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i></button>
                         <button class="btn btn-small" ng-click="cancelEditFileName(file)"><i class="icon-remove"></i>
                         </button>

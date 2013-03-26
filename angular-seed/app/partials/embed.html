@@ -1,32 +1,37 @@
 <form name="editorForm">
     <div class="source">
         <div class="pull-right toolbar">
-            <button class="btn" title="Add new template" ng-click="newFile()">
-                <i class="icon-plus"></i>
-            </button>
-            <button class="btn" title="Edit current template" ng-click="editFileName(getActiveFile())">
-                <i class="icon-edit"></i>
-            </button>
-            <button class="btn" title="Edit current template" ng-click="removeFile(getActiveFile())">
-                <i class="icon-remove"></i>
-            </button>
-            <button class="btn" title="Edit current template" ng-click="setMain(getActiveFile())"
-                    ng-hide="getActiveFile().isMain">
-                <i class="icon-heart"></i>
-            </button>
+            <span ng-hide="toRun">
+                <span class="btn" title="Add new template" ng-click="newFile()">
+                    <i class="icon-plus"></i>
+                </span>
+                <span class="btn" title="Rename current template" ng-click="editFileName(getActiveFile())">
+                    <i class="icon-edit"></i>
+                </span>
+                <span class="btn" title="Delete current template" ng-click="removeFile(getActiveFile())">
+                    <i class="icon-remove"></i>
+                </span>
+                <span class="btn" title="Set current template as main entry" ng-click="setMain(getActiveFile())"
+                      ng-hide="getActiveFile().isMain">
+                    <i class="icon-heart"></i>
+                </span>
+            </span>
+            <span ng-show="toRun" class="btn pull-right" ng-click="run()">
+                <i class="icon-play"></i>&nbsp;&nbsp;Run again
+            </span>
         </div>
         <tabs>
             <pane ng-repeat="file in currentCode.files" active="file.active"
                   heading="{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
                 <div ng-show="file.editing">
-                        <span>
-                            <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
-                            <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i>
-                            </button>
-                            <button class="btn btn-small" ng-click="cancelEditFileName(file)">
-                                <i class="icon-remove"></i>
-                            </button>
+                    <form>
+                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
+                        <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i>
+                        </button>
+                        <span class="btn btn-small" ng-click="cancelEditFileName(file)">
+                            <i class="icon-remove"></i>
                         </span>
+                    </form>
                 </div>
                 <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
                           style="height:200px;width:100%" name="codeSource" ui-refresh="file.active"
@@ -34,9 +39,6 @@
                         ></textarea>
             </pane>
             <pane heading="Result" active="$parent.toRun">
-                <button class="btn pull-right" ng-click="run()" style="color: #ebebe7;border:none;text-shadow: none;font-size:12px;">
-                <i class="icon-play"></i>&nbsp;&nbsp;Run again
-                </button>
                 <div ng-show="result.error">
                     <pre class="template_error">{{result.error}}</pre>
                 </div>
@@ -47,7 +49,7 @@
         </tabs>
     </div>
 </form>
-<form name="paramsForm" title="type in JSON parameter here">
+<form name="paramsForm" title="type in JSON parameter here" ng-hide="toRun">
     <div class="params">
         <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
                   placeholder="Params in Json format"></textarea>

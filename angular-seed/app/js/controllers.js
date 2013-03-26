@@ -74,11 +74,12 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
 
     $scope.$watch("toRun", function (val) {
         if (val) {
-            $scope.toRun = false;
-            $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
-                $scope.result = data;
-                $scope.highlightRun = false;
-            });
+            if ($scope.currentCode.files.length > 0) {
+                $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
+                    $scope.result = data;
+                    $scope.highlightRun = false;
+                });
+            }
         }
     });
 
@@ -117,12 +118,19 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         file.active = true;
     }
 
-    function removeFile(file) {
-        if (confirm('Delete this template?')) {
-            $scope.currentCode.files = _.without($scope.currentCode.files, file);
-            if (file.isMain && $scope.currentCode.files.length > 0) {
-                $scope.currentCode.files[0].isMain = true;
+    function removeFile(file, noAlert) {
+        if ($scope.currentCode.files.length > 1) {
+            if (noAlert || confirm('Delete this template?')) {
+                $scope.currentCode.files = _.without($scope.currentCode.files, file);
+                if (!getMainFile()) {
+                    setMain($scope.currentCode.files[0]);
+                }
+                if (!getActiveFile()) {
+                    switchFile($scope.currentCode.files[0]);
+                }
             }
+        } else {
+            alert("Can't delete the last one template");
         }
     }
 
@@ -154,7 +162,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
 
     function cancelEditFileName(file) {
         if (!file.filename) {
-            alert("Original filename is empty, you can't cancel");
+            removeFile(file, true);
             return;
         }
         file.editName = null;
