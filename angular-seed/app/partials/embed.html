@@ -22,7 +22,7 @@
         </div>
         <tabs>
             <pane ng-repeat="file in currentCode.files" active="file.active"
-                  heading="{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
+                  heading="<i class='icon-file-alt'></i>&nbsp;{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
                 <div ng-show="file.editing">
                     <form>
                         <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
@@ -38,7 +38,7 @@
                           ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"
                         ></textarea>
             </pane>
-            <pane heading="Result" active="$parent.toRun">
+            <pane heading="<i class='icon-play'></i>&nbsp;Result" active="$parent.toRun">
                 <div ng-show="result.error">
                     <pre class="template_error">{{result.error}}</pre>
                 </div>

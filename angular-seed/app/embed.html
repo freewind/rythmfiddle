@@ -22,16 +22,18 @@
     <link rel="stylesheet" href="/templates/css/app.css"/>
     <style type="text/css">
         .params .CodeMirror {
-            height: 100px;
+            height: 100%;
         }
 
         .source .CodeMirror {
             height: 100%;
+            min-height: 60px;
         }
         
         .embedded .nav.nav-tabs {border-bottom: none;margin-bottom: 0;}
-        .embedded .nav.nav-tabs li a {border: none;border-radius: 0;background: transparent;}
-        .embedded .nav.nav-tabs li:not(.active) a:hover {text-decoration: underline;} 
+        .embedded .nav.nav-tabs li {padding: 8px 5px 4px 5px;}
+        .embedded .nav.nav-tabs li a {padding:2px;border: none;border-radius: 0;background: transparent;border-bottom:1px solid #fff;}
+        .embedded .nav.nav-tabs li:not(.active) a:hover {border-bottom: 1px solid #0088cc;} 
         .embedded form {margin-bottom: 1px;}
         .embedded form .toolbar {margin-top: 5px;}
         .embedded .btn {background: transparent;border-color: #fff;border-image: none;margin-bottom: -2px;opacity: .5;}
