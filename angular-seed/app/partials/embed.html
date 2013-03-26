@@ -1,6 +1,6 @@
 <form name="editorForm">
     <div class="source">
-        <div class="pull-right">
+        <div class="pull-right toolbar">
             <button class="btn" title="Add new template" ng-click="newFile()">
                 <i class="icon-plus"></i>
             </button>
@@ -34,7 +34,9 @@
                         ></textarea>
             </pane>
             <pane heading="Result" active="$parent.toRun">
-                <button class="btn pull-right" ng-click="run()">Run again</button>
+                <button class="btn pull-right" ng-click="run()" style="color: #ebebe7;border:none;text-shadow: none;font-size:12px;">
+                <i class="icon-play"></i>&nbsp;&nbsp;Run again
+                </button>
                 <div ng-show="result.error">
                     <pre class="template_error">{{result.error}}</pre>
                 </div>
@@ -45,7 +47,7 @@
         </tabs>
     </div>
 </form>
-<form name="paramsForm">
+<form name="paramsForm" title="type in JSON parameter here">
     <div class="params">
         <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
                   placeholder="Params in Json format"></textarea>
