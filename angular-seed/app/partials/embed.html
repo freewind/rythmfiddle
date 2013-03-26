@@ -1,7 +1,7 @@
 <form name="editorForm">
     <div class="source">
         <div class="pull-right toolbar">
-            <span ng-hide="toRun">
+            <span ng-show="getActiveFile()">
                 <span class="btn" title="Add new template" ng-click="newFile()">
                     <i class="icon-plus"></i>
                 </span>
@@ -16,7 +16,7 @@
                     <i class="icon-heart"></i>
                 </span>
             </span>
-            <span ng-show="toRun" class="btn pull-right" ng-click="run()">
+            <span ng-hide="getActiveFile()" class="btn pull-right" ng-click="run()">
                 <i class="icon-play"></i>&nbsp;&nbsp;Run again
             </span>
         </div>
@@ -49,7 +49,7 @@
         </tabs>
     </div>
 </form>
-<form name="paramsForm" title="type in JSON parameter here" ng-hide="toRun">
+<form name="paramsForm" title="type in JSON parameter here" ng-show="getActiveFile()">
     <div class="params">
         <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
                   placeholder="Params in Json format"></textarea>
