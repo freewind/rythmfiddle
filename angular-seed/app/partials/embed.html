@@ -1,6 +1,6 @@
 <form name="editorForm">
     <div class="source">
-        <div class="pull-right toolbar">
+        <div class="slight-buttons pull-right toolbar">
             <span ng-show="getActiveFile()">
                 <span class="btn" title="Add new template" ng-click="newFile()">
                     <i class="icon-plus"></i>
@@ -21,7 +21,7 @@
             </span>
         </div>
         <tabs>
-            <pane heading="Result" active="$parent.toRun">
+            <pane heading="<i class='icon-eye-open'></i> Result" active="$parent.toRun">
                 <div ng-show="result.error">
                     <pre class="template_error">{{result.error}}</pre>
                 </div>
@@ -30,19 +30,19 @@
                 </div>
             </pane>
             <pane ng-repeat="file in currentCode.files" active="file.active"
-                  heading="{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
-                <div ng-show="file.editing">
-                    <form>
-                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
-                        <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i>
+                  heading="<i class='icon-file-alt'></i> {{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
+                <div class="edit_panel form-inline" ng-show="file.editing">
+                    <form class="form-inline">
+                        <input type="text" class="input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
+                        <button class="btn" ng-click="saveFileName(file)"><i class="icon-ok"></i>
                         </button>
-                        <span class="btn btn-small" ng-click="cancelEditFileName(file)">
+                        <span class="btn" ng-click="cancelEditFileName(file)">
                             <i class="icon-remove"></i>
                         </span>
                     </form>
                 </div>
                 <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
-                          style="height:200px;width:100%" name="codeSource" ui-refresh="file.active"
+                          name="codeSource" ui-refresh="file.active"
                           ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"></textarea>
             </pane>
         </tabs>
