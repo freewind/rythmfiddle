@@ -10,14 +10,14 @@
                         <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                         <li ng-repeat="code in codes|orderBy:'desc'" ng-class="{active: code.id==currentCode.id}">
-                            <a ng-href="/editor/{{code.id}}">{{code.desc}}</a></li>
+                            <a ng-href="#/editor/{{code.id}}">{{code.desc}}</a></li>
                     </ul>
                 </div>
                 <!-- /btn-group -->
             </div>
 
             <div class="btn-toolbar">
-                <a class="btn" ng-href="/editor" ng-show="current">New</a>
+                <a class="btn" ng-href="#/editor" ng-show="current">New</a>
                 <button class="btn" ng-click="removeCurrentCode()" ng-show="current && currentCode.id">
                     Del Cur. Demo
                 </button>
@@ -58,7 +58,7 @@
                     <i class="icon-plus"> </i>
                     &nbsp;&nbsp;New file ...
                 </button>
-                <a ng-show="currentCode.id" class="btn btn-small" ng-href="/embed/{{currentCode.id}}"
+                <a ng-show="currentCode.id" class="btn btn-small" ng-href="/embed/#/{{currentCode.id}}"
                    title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i></a>
             </div>
         </div>

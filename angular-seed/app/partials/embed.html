@@ -21,6 +21,14 @@
             </span>
         </div>
         <tabs>
+            <pane heading="Result" active="$parent.toRun">
+                <div ng-show="result.error">
+                    <pre class="template_error">{{result.error}}</pre>
+                </div>
+                <div ng-hide="result.error">
+                    <pre>{{result.renderedCode}}</pre>
+                </div>
+            </pane>
             <pane ng-repeat="file in currentCode.files" active="file.active"
                   heading="{{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
                 <div ng-show="file.editing">
@@ -35,16 +43,7 @@
                 </div>
                 <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
                           style="height:200px;width:100%" name="codeSource" ui-refresh="file.active"
-                          ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"
-                        ></textarea>
-            </pane>
-            <pane heading="Result" active="$parent.toRun">
-                <div ng-show="result.error">
-                    <pre class="template_error">{{result.error}}</pre>
-                </div>
-                <div ng-hide="result.error">
-                    <pre>{{result.renderedCode}}</pre>
-                </div>
+                          ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"></textarea>
             </pane>
         </tabs>
     </div>
