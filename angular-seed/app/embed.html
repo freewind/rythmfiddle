@@ -87,7 +87,7 @@ window._trigger_parent = function(evt, data) {
 var h = 0;
 window._resize = function(){
 var href = window.location.href;
-var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href), h0 = window.document.body.offsetHeight;
+var r = /.*\/embed\/#\/([0-9a-z]*).*/g, m = r.exec(href), h0 = window.document.body.offsetHeight;
 if (h == h0) return;
 h = h0;
 _trigger_parent("_resize", {h: h, id: m[1]});
