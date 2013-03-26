@@ -26,11 +26,22 @@
         }
 
         .source .CodeMirror {
-            height: 300px;
+            height: 100%;
         }
+        
+        .embedded .nav.nav-tabs {border-bottom: none;margin-bottom: 0;}
+        .embedded .nav.nav-tabs li a {border: none;border-radius: 0;background: transparent;}
+        .embedded .nav.nav-tabs li:not(.active) a:hover {text-decoration: underline;} 
+        .embedded form {margin-bottom: 1px;}
+        .embedded form .toolbar {margin-top: 5px;}
+        .embedded button.btn {background: transparent;border-color: #fff;border-image: none;margin-bottom: -2px;opacity: .5;}
+        .embedded button.btn:hover {opacity: 1;}
+        .embedded .alert.alert-info {background: transparent;font-size: 90%;border:none;margin-bottom: 0;}
+        .embedded pre {border-radius: 0;border:0;background-color: #262626;color:#EBEFE7;}
+        .embedded .tab-content {background-color: #262626;}
     </style>
 </head>
-<body>
+<body class="embedded">
 
 <div ng-view></div>
 
@@ -52,6 +63,32 @@
 <script src="/templates/js/controllers.js"></script>
 <script src="/templates/js/filters.js"></script>
 <script src="/templates/js/directives.js"></script>
+<script>
+$(function(){
+// see http://stackoverflow.com/questions/5183684/cross-domain-javascript-code-with-sibling-sub-domains
+// to beat the cross sub domain issue when passing event from iframe to enclosing page
+document.domain = location.host.replace(/^.*?([^.]+\.[^.]+)$/g,'$1');
+window._trigger_parent = function(evt, data) {
+    if (top === window) {
+        // not embedded
+        return;
+    } else {
+        $(document).trigger(evt, data);
+        var jqEvt = $.Event(evt, data);
+        window.parent.$('body').trigger(jqEvt);
+    }
+};
+window._resize = function(){
+var href = window.location.href;
+var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href);
+_trigger_parent("_resize", {h: window.document.body.offsetHeight, id: m[1]});
+};
+setTimeout(window._resize, 300);
+//$(window).resize(_resize);
+//$('div.CodeMirror').resize(_resize);
+setInterval(_resize, 1000);
+});
+</script>
 
 <link rel="stylesheet" type="text/css" href="/public/libs/angular-ui/0.4.0/angular-ui.css">
 <link rel="stylesheet" type="text/css" href="/public/libs/codemirror/3.1/lib/codemirror.css"/>
