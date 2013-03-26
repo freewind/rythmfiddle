@@ -10,7 +10,7 @@
         // However, IF you have custom directives (yours or someone else's) then
         // enumerate the list of tags in window.myCustomTags
 
-        window.myCustomTags = [ 'yourDirective', 'somebodyElsesDirective' ]; // optional
+        window.myCustomTags = [ 'tabs', 'pane' ]; // optional
     </script>
     <script src="/public/libs/angular-ui-0.3.2/angular-ui-ieshiv.min.js"></script>
     <![endif]-->
@@ -35,17 +35,20 @@
             <a class="brand" href="/">Rythm Fiddle</a>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li ng-class="{active: currentPath()=='/editor'}"><a href="/editor">Editor</a></li>
-                    <li ng-class="{active: currentPath()=='/all_demos'}"><a href="/all_demos">All Demos</a></li>
+                    <li ng-class="{active: currentPath()=='/editor'}"><a ng-href="#/editor">Editor</a></li>
+                    <li ng-class="{active: currentPath()=='/all_demos'}"><a ng-href="#/all_demos">All Demos</a></li>
                     <li>
                         <a ng-href="{{siteInfo.rythmWebsite}}" target="_blank">Rythm Website</a>
                     </li>
                     <li>
                         <a ng-href="{{siteInfo.rythmfiddleGithub}}" target="_blank">Fork me on Github</a>
                     </li>
-                    <li><a href="#" ng-click="showAbout()">About</a></li>
+                    <li><a class="btn-link" ng-click="showAbout()">About</a></li>
                 </ul>
-                <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
+                <span>
+                    <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
+                    <a class="navbar-text pull-right" ng-href="#/login"  ng-hide="current">Admin Login</a>
+                </span>
             </div>
             <!--/.nav-collapse -->
         </div>

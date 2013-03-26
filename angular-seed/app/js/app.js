@@ -15,16 +15,12 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
             templateUrl: '/templates/partials/editor.html',
             controller: EditorCtrl
         });
-        $routeProvider.when('/embed/:id', {
-            templateUrl: '/templates/partials/embed.html',
-            controller: EditorCtrl
-        });
         $routeProvider.when('/login', {
             templateUrl: '/templates/partials/login.html',
             controller: LoginCtrl
         });
         $routeProvider.otherwise({redirectTo: '/editor'});
-        $locationProvider.html5Mode(true);
+        // $locationProvider.html5Mode(true);
     }]).
     run(['$rootScope', '$http', function ($rootScope, $http) {
         // try to get logged user information when page refreshed
@@ -35,3 +31,11 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
         }
     }]);
 
+angular.module('embedApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services', 'myApp.directives']).
+    config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+        $routeProvider.when('/:id', {
+            templateUrl: '/templates/partials/embed.html',
+            controller: EditorCtrl
+        });
+        // $locationProvider.html5Mode(true);
+    }]);
