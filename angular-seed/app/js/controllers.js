@@ -180,7 +180,9 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     function save() {
         var d = $dialog.dialog({
             resolve: {
-                code: $scope.currentCode
+                code: function () {
+                    return $scope.currentCode;
+                }
             }
         });
         d.open('/templates/partials/save_dialog.html', SaveDialogCtrl).then(function (code) {
