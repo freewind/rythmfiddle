@@ -54,8 +54,8 @@ public class Code {
                 conf.put("engine.mode", Rythm.Mode.dev);
                 conf.put("sandbox.security_manager", rsm);
                 conf.put("sandbox.thread_factory", stf);
-                conf.put("log.source.java.enabled", false);
-                conf.put("log.source.template.enabled", false);
+                //conf.put("log.source.java.enabled", false);
+                //conf.put("log.source.template.enabled", false);
                 e = new RythmEngine(conf);
                 engines.put(sessId, e);
             }
