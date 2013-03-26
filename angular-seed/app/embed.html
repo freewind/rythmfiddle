@@ -14,8 +14,8 @@
     </script>
     <script src="/public/libs/angular-ui-0.3.2/angular-ui-ieshiv.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="/public/libs/bootstrap-2.1.1/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="/public/libs/font-awesome/3.0/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="/public/libs/bootstrap-2.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/libs/font-awesome/3.0/css/font-awesome.min.css"/>
     <!--[if IE 7]>
     <link rel="stylesheet" type="text/css" href="/public/libs/font-awesome/3.0/css/font-awesome-ie7.min.css">
     <![endif]-->
@@ -28,8 +28,9 @@
         .source .CodeMirror {
             height: 100%;
         }
-        
-        .embedded .nav.nav-tabs {border-bottom: none;margin-bottom: 0;}
+
+        .embedded li.active {background-color:#EEEEEE; }
+        .embedded .nav.nav-tabs {border-bottom: none;margin-bottom: 1px;}
         .embedded .nav.nav-tabs li a {border: none;border-radius: 0;background: transparent;}
         .embedded .nav.nav-tabs li:not(.active) a:hover {text-decoration: underline;} 
         .embedded form {margin-bottom: 1px;}
@@ -51,11 +52,12 @@
 <script src="/public/libs/jquery-ui-1.8.24/js/jquery-1.8.2.min.js" charset="utf-8"></script>
 <script src="/public/libs/underscore/1.4.3/underscore.min.js" charset="utf-8"></script>
 <script src="/public/libs/bootstrap-2.1.1/js/bootstrap.min.js" charset="utf-8"></script>
-<script src="/templates/lib/angular/angular.js"></script>
+<script src="/templates/lib/angular/angular.min.js"></script>
+<!-- angular-ui has been modified, must use angular-ui.js, not augular-ui.min.js -->
 <script src="/public/libs/angular-ui/0.4.0/angular-ui.js" charset="utf-8"></script>
-<script src="/public/libs/bootstrap-ui/0.2.0/ui-bootstrap-0.2.0.js" charset="utf-8"></script>
-<script src="/public/libs/bootstrap-ui/0.2.0/ui-bootstrap-tpls-0.2.0.js" charset="utf-8"></script>
-<script src="/public/libs/jsbeautier/beautify.js" charset="utf-8"></script>
+<script src="/public/libs/bootstrap-ui/0.2.0/ui-bootstrap-0.2.0.min.js" charset="utf-8"></script>
+<script src="/public/libs/bootstrap-ui/0.2.0/ui-bootstrap-tpls-0.2.0.min.js" charset="utf-8"></script>
+<!-- <script src="/public/libs/jsbeautier/beautify.js" charset="utf-8"></script> -->
 <script src="/public/libs/codemirror/3.1/lib/codemirror.js" charset="utf-8"></script>
 <script src="/public/libs/codemirror/3.1/mode/clike/clike.js" charset="utf-8"></script>
 <script src="/templates/js/app.js"></script>
