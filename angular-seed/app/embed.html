@@ -40,6 +40,7 @@
         .embedded .slight-buttons .btn:hover {opacity: 1;}
         .embedded .alert.alert-info {background: transparent;font-size: 90%;border:none;margin-bottom: 0;}
         .embedded pre {border-radius: 0;border:0;background-color: #262626;color:#EBEFE7;}
+        .embedded pre.template_error {color: rgb(224, 224, 91);}
         .embedded .tab-content {background-color: #262626;}
         .embedded .edit_panel {background-color: #FFF;}
     </style>
@@ -81,15 +82,18 @@ window._trigger_parent = function(evt, data) {
         window.parent.$('body').trigger(jqEvt);
     }
 };
+var h = 0;
 window._resize = function(){
 var href = window.location.href;
-var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href);
-_trigger_parent("_resize", {h: window.document.body.offsetHeight, id: m[1]});
+var r = /.*\/embed\/([0-9a-z]*).*/g, m = r.exec(href), h0 = window.document.body.offsetHeight;
+if (h == h0) return;
+h = h0;
+_trigger_parent("_resize", {h: h, id: m[1]});
 };
-setTimeout(window._resize, 300);
+//setTimeout(window._resize, 300);
 //$(window).resize(_resize);
 //$('div.CodeMirror').resize(_resize);
-setInterval(_resize, 1000);
+setInterval(_resize, 500);
 });
 </script>
 
