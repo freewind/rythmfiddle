@@ -31,21 +31,23 @@
             </pane>
             <pane ng-repeat="file in currentCode.files" active="file.active"
                   heading="<i class='icon-file-alt'></i> {{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
-                <div class="edit_panel form-inline" ng-show="file.editing">
-                    <form class="form-inline">
-                        <input type="text" class="input-small" ng-model="file.editName" autofocus="{{file.editing}}"/>
-                        <button class="btn" ng-click="saveFileName(file)"><i class="icon-ok"></i>
-                        </button>
-                        <span class="btn" ng-click="cancelEditFileName(file)">
-                            <i class="icon-remove"></i>
-                        </span>
-                    </form>
-                </div>
-                <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
-                          name="codeSource" ui-refresh="file.active"
-                          ng-model="file.source" ui-keypress="{'ctrl-enter':'run($event)'}"></textarea>
             </pane>
         </tabs>
+        <div ng-show="getActiveFile()">
+            <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
+                <form class="form-inline">
+                    <input type="text" class="input-small" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                    <button class="btn" ng-click="saveFileName(getActiveFile())"><i class="icon-ok"></i>
+                    </button>
+                    <span class="btn" ng-click="cancelEditFileName(getActiveFile())">
+                        <i class="icon-remove"></i>
+                    </span>
+                </form>
+            </div>
+            <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
+                      name="codeSource" ui-refresh="getActiveFile().active"
+                      ng-model="getActiveFile().source" ui-keypress="{'ctrl-enter':'run($event)'}"></textarea>
+        </div>
     </div>
 </form>
 <form name="paramsForm" title="type in JSON parameter here" ng-show="getActiveFile()">
