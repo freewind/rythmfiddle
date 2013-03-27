@@ -66,7 +66,7 @@
             <form name="editorForm">
                 <div class="source">
                     <h4>Template: [{{getActiveFile().filename}}]</h4>
-                    <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true}"
+                    <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true,'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                               name="codeSource" ng-model="getActiveFile().source" ui-keypress="{'ctrl-enter':'run($event)'}">
                         ></textarea>
                 </div>
@@ -81,7 +81,8 @@
                 <div>Params (in JSON format)</div>
                 <form name="paramsForm">
                     <div class="params">
-                        <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
+                        <textarea ui-codemirror="{theme:'lesser-dark','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
+                                  name="codeParams" ng-model="currentCode.params"
                                   placeholder="Params in Json format"></textarea>
                     </div>
                 </form>

@@ -64,6 +64,15 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     $scope.getActiveFile = getActiveFile;
     $scope.getMainFile = getMainFile;
 
+    $scope.keyEventHandlerForCodeMirror = keyEventHandlerForCodeMirror;
+
+    function keyEventHandlerForCodeMirror($event){
+        var keyCode = $event.keyCode;
+        if (keyCode === 10 || keyCode == 13 && $event.ctrlKey) {
+            run();
+        }
+    }
+
 
     $scope.$watch("currentCode", function (newVal, oldVal) {
         if (newVal == oldVal) {
@@ -199,6 +208,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
 
     function run() {
         if ($scope.currentCode.files.length > 0) {
+            $scope.resultPageActive = true;
             $scope.running = true;
             $scope.highlightRun = false;
             $scope.result = {

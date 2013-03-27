@@ -118,7 +118,7 @@ angular.module('ui.directives').directive('uiCalendar',['ui.config', '$parse', f
 /**
  * Binds a CodeMirror widget to a <textarea> element.
  */
-angular.module('ui.directives').directive('uiCodemirror', ['ui.config', '$timeout', function (uiConfig, $timeout) {
+angular.module('ui.directives').directive('uiCodemirror', ['ui.config', '$timeout', '$parse', function (uiConfig, $timeout, $parse) {
 	'use strict';
 
 	var events = ["cursorActivity", "viewportChange", "gutterClick", "focus", "blur", "scroll", "update"];
@@ -134,6 +134,16 @@ angular.module('ui.directives').directive('uiCodemirror', ['ui.config', '$timeou
 
 			options = uiConfig.codemirror || {};
 			opts = angular.extend({}, options, scope.$eval(attrs.uiCodemirror));
+
+            // hack
+            if (opts.onKeyEvent) {
+                var fn = $parse(opts.onKeyEvent);
+                opts.onKeyEvent = function (cmInstance, event) {
+                    scope.$apply(function() {
+                        fn(scope, {$event:event});
+                    });
+                }
+            }
 
 			onChange = function (aEvent) {
 				return function (instance, changeObj) {
