@@ -66,7 +66,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
 
     $scope.keyEventHandlerForCodeMirror = keyEventHandlerForCodeMirror;
 
-    function keyEventHandlerForCodeMirror($event){
+    function keyEventHandlerForCodeMirror($event) {
         var keyCode = $event.keyCode;
         if (keyCode === 10 || keyCode == 13 && $event.ctrlKey) {
             run();
@@ -299,4 +299,13 @@ function AllDemoCtrl($scope, $http) {
         })
     }
 }
-AllDemoCtrl.$inject = ['$scope', '$http']
+AllDemoCtrl.$inject = ['$scope', '$http'];
+
+function SampleModelCodeCtrl($scope, $http) {
+    $scope.models = [];
+    $http.get('/api/Application/sampleModelCode').success(function (data) {
+        $scope.models = data;
+    });
+}
+SampleModelCodeCtrl.$inject = ['$scope', '$http']
+

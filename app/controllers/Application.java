@@ -7,10 +7,12 @@ import common.Helper;
 import models.Code;
 import models.CodeFile;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import play.Play;
 import play.mvc.Controller;
 import play.mvc.Scope;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,6 +134,18 @@ public class Application extends Controller {
         data.put("rythmWebsite", Play.configuration.get("site.rythmWebsite"));
         data.put("rythmfiddleGithub", Play.configuration.get("site.rythmfiddleGithub"));
         renderJSON(data);
+    }
+
+    public static void sampleModelCode() throws IOException {
+        List<Map<String, String>> codes = new ArrayList();
+        for (File file : Play.getFile("app/demo").listFiles()) {
+            String content = FileUtils.readFileToString(file, "UTF-8");
+            Map<String, String> map = new HashMap();
+            map.put("className", "demo." + StringUtils.substringBefore(file.getName(), "."));
+            map.put("source", content);
+            codes.add(map);
+        }
+        renderJSON(codes);
     }
 
 }
