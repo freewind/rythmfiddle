@@ -4,17 +4,17 @@ import com.google.gson.Gson;
 import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.extension.ICodeType;
+import com.greenlaw110.rythm.extension.ISourceCodeEnhancer;
+import com.greenlaw110.rythm.play.RythmPlugin;
 import com.greenlaw110.rythm.sandbox.RythmSecurityManager;
 import com.greenlaw110.rythm.sandbox.SandboxThreadFactory;
+import com.greenlaw110.rythm.template.ITemplate;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
 import play.mvc.Scope;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static common.Helper.eq;
 
@@ -54,6 +54,32 @@ public class Code {
                 conf.put("engine.mode", Rythm.Mode.dev);
                 conf.put("sandbox.security_manager", rsm);
                 conf.put("sandbox.thread_factory", stf);
+                RythmEngine playRE = RythmPlugin.engine;
+                conf.put("engine.class_loader.parent", playRE.classLoader().getParent());
+                conf.put("engine.class_loader.bytecode_helper", playRE.conf().byteCodeHelper());
+                conf.put("sandbox.allowed_system_properties", "java.io.tmpdir,file.encoding,user.dir,line.separator,java.vm.name,java.protocol.handler.pkgs,suppressRawWhenUnchecked");
+                conf.put("codegen.source_code_enhancer", new ISourceCodeEnhancer() {
+                    @Override
+                    public List<String> imports() {
+                        List<String> l = new ArrayList<String>();
+                        l.add("demo.*");
+                        return l;
+                    }
+
+                    @Override
+                    public String sourceCode() {
+                        return null; 
+                    }
+
+                    @Override
+                    public Map<String, ?> getRenderArgDescriptions() {
+                        return Collections.EMPTY_MAP; 
+                    }
+
+                    @Override
+                    public void setRenderArgs(ITemplate template) {
+                    }
+                });
                 //conf.put("log.source.java.enabled", false);
                 //conf.put("log.source.template.enabled", false);
                 e = new RythmEngine(conf);
