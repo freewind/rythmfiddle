@@ -21,7 +21,8 @@
             </span>
         </div>
         <tabs>
-            <pane heading="<i class='icon-eye-open'></i> Result" active="$parent.toRun">
+            <pane heading="<i class='{{running && 'icon-spin icon-spinner' || 'icon-eye-open'}}'></i> Result"
+                  active="$parent.resultPageActive">
                 <div ng-show="result.error">
                     <pre class="template_error">{{result.error}}</pre>
                 </div>
@@ -50,15 +51,13 @@
         </div>
     </div>
 </form>
-<div ng-show="getActiveFile()">
-    <form name="paramsForm" title="type in JSON parameter here">
-        <div class="params">
-            <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
-                      placeholder="Params in Json format"></textarea>
-        </div>
-    </form>
-    <div class="alert alert-info">Note: you can use
-        <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument
-        types
+<form name="paramsForm" title="type in JSON parameter here">
+    <div class="params">
+        <textarea ui-codemirror="{theme:'lesser-dark'}" name="codeParams" ng-model="currentCode.params"
+                  placeholder="Params in Json format"></textarea>
     </div>
+</form>
+<div class="alert alert-info">Note: you can use
+    <code>String</code>,<code>Integer</code>,<code>Boolean</code> and most other JDK classes as argument
+    types
 </div>

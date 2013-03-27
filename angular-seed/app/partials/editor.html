@@ -87,7 +87,7 @@
                 </form>
                 <div class="btn-toolbar">
                     <button class="btn" ng-click="run()" ng-class="{'btn-primary': highlightRun}">
-                        Run
+                        <i class="icon-spin icon-spinner" ng-show="running"></i> Run
                     </button>
                     <button class="btn" ng-show="current" ng-click="save()"
                             ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">

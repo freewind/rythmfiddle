@@ -26,7 +26,7 @@ function BodyCtrl($scope, $dialog, $location, $http) {
 }
 BodyCtrl.$inject = ['$scope', '$dialog', '$location', '$http'];
 
-function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
+function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     $scope.codes = [];
     $scope.currentCode = {
         id: $routeParams.id,
@@ -48,7 +48,8 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         renderedCode: ''
     }
     $scope.highlightRun = false;
-    $scope.toRun = false;
+    $scope.resultPageActive = false;
+    $scope.running = false;
 
     $scope.run = run;
     $scope.save = save;
@@ -72,15 +73,9 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         }
     }, true);
 
-    $scope.$watch("toRun", function (val) {
+    $scope.$watch("resultPageActive", function (val) {
         if (val) {
-            $scope.toRun = false;
-            if ($scope.currentCode.files.length > 0) {
-                $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
-                    $scope.result = data;
-                    $scope.highlightRun = false;
-                });
-            }
+            run();
         }
     });
 
@@ -89,7 +84,6 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
         $http.get('/api/Application/load?id=' + $scope.currentCode.id).success(function (data) {
             $scope.currentCode = data;
             getMainFile().active = true;
-            $scope.run();
         });
     }
 
@@ -204,8 +198,24 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     }
 
     function run() {
-        $scope.toRun = true;
+        if ($scope.currentCode.files.length > 0) {
+            $scope.running = true;
+            $scope.highlightRun = false;
+            $scope.result = {
+                renderedCode: 'running on server ...'
+            };
+            var start = new Date().getTime();
+            $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
+                var waitMore = new Date().getTime() - start;
+                if (waitMore < 600) waitMore = 600;
+                $timeout(function () {
+                    $scope.result = data;
+                    $scope.running = false;
+                }, waitMore);
+            });
+        }
     }
+
 
     function newFile() {
         var newOne = {
@@ -223,7 +233,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location) {
     }
 
 }
-EditorCtrl.$inject = ['$scope', '$http', '$routeParams', '$dialog', '$location'];
+EditorCtrl.$inject = ['$scope', '$http', '$routeParams', '$dialog', '$location', '$timeout'];
 
 function SaveDialogCtrl($scope, dialog, code, $http) {
     $scope.code = code;
