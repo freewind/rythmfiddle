@@ -19,6 +19,10 @@ angular.module('myApp', ['ui', 'ui.bootstrap', 'myApp.filters', 'myApp.services'
             templateUrl: '/templates/partials/login.html',
             controller: LoginCtrl
         });
+        $routeProvider.when('/sample_model_code', {
+            templateUrl: '/templates/partials/sample_model_code.html',
+            controller: SampleModelCodeCtrl
+        })
         $routeProvider.otherwise({redirectTo: '/editor'});
         // $locationProvider.html5Mode(true);
     }]).
