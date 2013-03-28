@@ -44,7 +44,7 @@
 }
 
 .params .CodeMirror {
-    height: 100px;
+    height: 100%;
 }
 
 .source .CodeMirror {

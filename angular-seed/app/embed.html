@@ -71,18 +71,17 @@
 <script src="/templates/js/directives.js"></script>
 <script>
 $(function(){
+if (top === window) {
+    // not embedded
+    return;
+}
 // see http://stackoverflow.com/questions/5183684/cross-domain-javascript-code-with-sibling-sub-domains
 // to beat the cross sub domain issue when passing event from iframe to enclosing page
 document.domain = location.host.replace(/^.*?([^.]+\.[^.]+)$/g,'$1');
 window._trigger_parent = function(evt, data) {
-    if (top === window) {
-        // not embedded
-        return;
-    } else {
-        $(document).trigger(evt, data);
-        var jqEvt = $.Event(evt, data);
-        window.parent.$('body').trigger(jqEvt);
-    }
+    $(document).trigger(evt, data);
+    var jqEvt = $.Event(evt, data);
+    window.parent.$('body').trigger(jqEvt);
 };
 var h = 0;
 window._resize = function(){
@@ -96,6 +95,14 @@ _trigger_parent("_resize", {h: h, id: m[1]});
 //$(window).resize(_resize);
 //$('div.CodeMirror').resize(_resize);
 setInterval(_resize, 500);
+
+// prevent navigate to sample code page when running inside an iframe
+$('body').on('click', 'a.sample-code-link', function(e){
+    e.stopImmediatePropagation();
+    _trigger_parent("_show_sample_code");
+    return false;
+})
+
 });
 </script>
 
