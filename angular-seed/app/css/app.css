@@ -65,3 +65,7 @@
 .file_active {
     color: red;
 }
+
+.ng-cloak {
+    display: none;
+}

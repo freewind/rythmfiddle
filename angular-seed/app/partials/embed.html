@@ -20,7 +20,7 @@
                 <i class="icon-play"></i>&nbsp;&nbsp;Run again
             </span>
         </div>
-        <tabs>
+        <tabs class="ng-cloak">
             <pane heading="<i class='{{running && 'icon-spin icon-spinner' || 'icon-eye-open'}}'></i> Result"
                   active="$parent.resultPageActive">
                 <div ng-show="result.error">
@@ -45,7 +45,7 @@
                     </span>
                 </form>
             </div>
-            <textarea ui-codemirror="{theme:'lesser-dark','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
+            <textarea class="ng-cloak" ui-codemirror="{theme:'lesser-dark','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                       name="codeSource" ui-refresh="getActiveFile().active"
                       ng-model="getActiveFile().source"
                       ui-keypress="{'ctrl-10 ctrl-enter':'xxx($event)'}"
@@ -55,7 +55,7 @@
 </form>
 <form name="paramsForm" title="type in JSON parameter here">
     <div class="params">
-        <textarea ui-codemirror="{theme:'lesser-dark', 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}" name="codeParams" ng-model="currentCode.params"
+        <textarea class="ng-cloak" ui-codemirror="{theme:'lesser-dark', 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}" name="codeParams" ng-model="currentCode.params"
                   placeholder="Params in Json format" ></textarea>
     </div>
 </form>
