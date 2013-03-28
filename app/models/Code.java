@@ -11,6 +11,7 @@ import com.greenlaw110.rythm.sandbox.SandboxThreadFactory;
 import com.greenlaw110.rythm.template.ITemplate;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
+import demo.Order;
 import play.mvc.Scope;
 
 import java.io.IOException;
@@ -83,6 +84,7 @@ public class Code {
                 //conf.put("log.source.java.enabled", false);
                 //conf.put("log.source.template.enabled", false);
                 e = new RythmEngine(conf);
+                e.registerTransformer(Order.class);
                 engines.put(sessId, e);
             }
             return e;
