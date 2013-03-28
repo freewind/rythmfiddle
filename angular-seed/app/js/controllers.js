@@ -93,6 +93,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         $http.get('/api/Application/load?id=' + $scope.currentCode.id).success(function (data) {
             $scope.currentCode = data;
             getMainFile().active = true;
+            run();
         });
     }
 
@@ -208,8 +209,9 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
 
     function run() {
         if ($scope.currentCode.files.length > 0) {
-            $scope.resultPageActive = true;
+            if ($scope.running) return;
             $scope.running = true;
+            $scope.resultPageActive = true;
             $scope.highlightRun = false;
             $scope.result = {
                 renderedCode: 'running on server ...'
