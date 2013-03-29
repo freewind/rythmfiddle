@@ -47,6 +47,10 @@ html * {
       color: #dc322f;
       border-bottom: 1px dotted #cb4b16;
 }
+.cm-s-rythm-web-light span.cm-builtin {
+      color: #E09543;
+      font-weight: bold;
+}
 .cm-s-rythm-web-light span.cm-keyword {
       color: #657b83;
       font-weight: bold;
@@ -132,9 +136,13 @@ html * {
       color: #dc322f;
       border-bottom: 1px dotted #cb4b16;
 }
+.cm-s-rythm-web span.cm-builtin {
+      color: #E09543;
+      font-weight: bold;
+}
 .cm-s-rythm-web span.cm-keyword {
       color: #839496;
-        font-weight: bold;
+      font-weight: bold;
 }
 .cm-s-rythm-web span.cm-atom {
       color: #2aa198;
