@@ -1,17 +1,16 @@
 CodeMirror.defineMode("rythm", function() {
-    var htmlMode = CodeMirror.getMode(config: {name: "xml", htmlMode: true});
-    
     function parseWords(str) {
         var obj = {}, words = str.split(" ");
         for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
         return obj;
     }
 
-    var keywords = parseWords("args @assign @cache @compact @continue @debug @def else @escape @exec @expand @extends @for @get @i18n @if @import @include @init @invoke @locale @macro " +
-                              "@nocompact @raw @render @renderBody @return @section @set @ts @verbatim");
-    var functions = parseWords("#if #elseif #foreach #set #include #parse #macro #define #evaluate " +
-                               "#{if} #{elseif} #{foreach} #{set} #{include} #{parse} #{macro} #{define} #{evaluate}");
-    var specials = parseWords("$foreach.count $foreach.hasNext $foreach.first $foreach.last $foreach.topmost $foreach.parent $rythmCount");
+    var keywords = parseWords("@args @assign @break @cache @compact @continue @debug @def " +
+                              "@escape @exec @__exitifnoclass__ @expand @extends @for @foreach " + 
+                              "@each @get @i18n @if @ifnot @include @init @invoke @locale " + 
+                              "@__logTime__ @macro @nocompact @raw @renderbody @dobody" + 
+                              "@render @rendersection @renderlayout @dolayout" +
+                              "@return @section @set @ts @verbatim");
     var isOperatorChar = /[+\-*&%=<>!?:\/|]/;
 
     function chain(stream, state, f) {
@@ -45,21 +44,26 @@ CodeMirror.defineMode("rythm", function() {
             return chain(stream, state, tokenUnparsed);
         }
         // single line comment?
-        else if (ch == "@" && stream.eat("//")) {
+        else if (ch == "@" && stream.eat("/")) {
             stream.skipToEnd();
             return "comment";
         }
         // variable?
         else if (ch == "@") {
-            stream.eatWhile(/[\w\d\$_\.{}]/);
-            // is it one of the specials?
-            if (specials && specials.propertyIsEnumerable(stream.current().toLowerCase())) {
+            stream.eatWhile(/[\w]/);
+            var word = stream.current().toLowerCase();
+            // is it one of the listed keywords?
+            if (keywords && keywords.propertyIsEnumerable(word))
+                return "keyword";
+            // is it one of the listed keywords?
+            if (keywords && keywords.propertyIsEnumerable(word) ||
+                stream.current().match(/^#[a-z0-9_]+ *$/i) && stream.peek()=="(") {
+                state.beforeParams = true;
                 return "keyword";
             }
-            else {
-                state.beforeParams = true;
-                return "builtin";
-            }
+            stream.eatWhile(/[\w\d\$_\.{}()]/);
+            state.beforeParams = true;
+            return "builtin";
         }
         // is it a operator?
         else if (isOperatorChar.test(ch)) {
@@ -73,8 +77,8 @@ CodeMirror.defineMode("rythm", function() {
             // is it one of the listed keywords?
             if (keywords && keywords.propertyIsEnumerable(word))
                 return "keyword";
-            // is it one of the listed functions?
-            if (functions && functions.propertyIsEnumerable(word) ||
+            // is it one of the listed keywords?
+            if (keywords && keywords.propertyIsEnumerable(word) ||
                 stream.current().match(/^#[a-z0-9_]+ *$/i) && stream.peek()=="(") {
                 state.beforeParams = true;
                 return "keyword";
@@ -102,7 +106,7 @@ CodeMirror.defineMode("rythm", function() {
     function tokenComment(stream, state) {
         var maybeEnd = false, ch;
         while (ch = stream.next()) {
-            if (ch == "#" && maybeEnd) {
+            if (ch == "@" && maybeEnd) {
                 state.tokenize = tokenBase;
                 break;
             }
@@ -114,11 +118,11 @@ CodeMirror.defineMode("rythm", function() {
     function tokenUnparsed(stream, state) {
         var maybeEnd = 0, ch;
         while (ch = stream.next()) {
-            if (ch == "#" && maybeEnd == 2) {
+            if (ch == "@" && maybeEnd == 2) {
                 state.tokenize = tokenBase;
                 break;
             }
-            if (ch == "]")
+            if (ch == "}")
                 maybeEnd++;
             else if (ch != " ")
                 maybeEnd = 0;
