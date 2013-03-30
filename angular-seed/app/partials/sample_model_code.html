@@ -1,6 +1,6 @@
 <div class="container">
     <div class="span10 offset1" ng-repeat="model in models">
         <h3>{{model.className}}</h3>
-        <pre class="prettyprint linenums nocode" ng-bind-html-unsafe="model.source|codePretty"></pre>
+        <pre class="prettyprint nocode" ng-bind-html-unsafe="model.source|codePretty:true"></pre>
     </div>
 </div>

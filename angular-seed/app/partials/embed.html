@@ -27,7 +27,7 @@
                     <pre class="template_error">{{result.error}}</pre>
                 </div>
                 <div ng-hide="result.error">
-                    <pre>{{result.renderedCode}}</pre>
+                    <pre class="prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
                 </div>
             </pane>
             <pane ng-repeat="file in currentCode.files" active="file.active"
