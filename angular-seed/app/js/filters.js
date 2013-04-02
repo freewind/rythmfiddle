@@ -9,14 +9,12 @@ angular.module('myApp.filters', []).
         }
     }]).
     filter('codePretty', function () {
-        return function (code) {
+        return function (code, showLineNums) {
             // hack around incorrect tokenization
             var newV = code.replace('.done-true', 'doneTrue');
-            newV = prettyPrintOne(newV, undefined, true);
+            newV = prettyPrintOne(newV, undefined, showLineNums);
             // hack around incorrect tokenization
             newV = newV.replace('doneTrue', '.done-true');
-            console.log('----------------------------');
-            console.log(newV);
             return newV;
         }
     });
