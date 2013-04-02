@@ -3,7 +3,7 @@
 require:
     - play
 #    - com.greenlaw110.rythm -> rythm-engine 1.0-b5
-    - com.gelinsoft -> play-rythm 1.0-b5o
+    - com.gelinsoft -> play-rythm 1.0-b5p
     - com.gelinsoft -> app-base 1.4.7
     - com.gelinsoft -> betterlogs 1.2i
 
