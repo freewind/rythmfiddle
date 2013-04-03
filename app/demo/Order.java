@@ -50,11 +50,11 @@ public class Order {
     }
     
     @Transformer(requireTemplate = true)
-    public static String asCurrency(Integer amount) {
+    public static String asCurrency(int amount) {
         return asCurrency(null, amount);
     }
     
-    public static String asCurrency(ITemplate template, Integer amount) {
+    public static String asCurrency(ITemplate template, int amount) {
         Double d = (float)amount / 100.00;
         return S.formatCurrency(template, d, null, null);
     }
