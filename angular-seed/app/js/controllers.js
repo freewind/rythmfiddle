@@ -303,11 +303,17 @@ function AllDemoCtrl($scope, $http) {
 }
 AllDemoCtrl.$inject = ['$scope', '$http'];
 
-function SampleModelCodeCtrl($scope, $http) {
+function SampleModelCodeCtrl($scope, $http, $window) {
     $scope.models = [];
+    $scope.scrollTo = scrollTo;
+
     $http.get('/api/Application/sampleModelCode').success(function (data) {
         $scope.models = data;
     });
+
+    function scrollTo(modelCls) {
+        $window.document.getElementById(modelCls).scrollIntoView();
+    }
 }
-SampleModelCodeCtrl.$inject = ['$scope', '$http']
+SampleModelCodeCtrl.$inject = ['$scope', '$http', '$window']
 

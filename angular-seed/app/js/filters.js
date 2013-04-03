@@ -11,7 +11,7 @@ angular.module('myApp.filters', []).
     filter('codePretty', function () {
         function escape(str) {
             if (str) {
-                return str.replace(/[&]/g, "&amp;").replace(/[<]/g, "&lt;").replace(/[>]/g, "&gt;");
+                return str.replace(/[<]/g, "&lt;").replace(/[>]/g, "&gt;");
             }
             return str;
         }

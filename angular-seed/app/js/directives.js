@@ -22,4 +22,12 @@ angular.module('myApp.directives', []).
                 })
             }
         }
+    }]).
+    directive('affix', [function () {
+        return {
+            restrict: 'C',
+            link: function (scope, elm, attrs) {
+                elm.affix();
+            }
+        }
     }]);

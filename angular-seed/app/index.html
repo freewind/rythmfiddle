@@ -23,34 +23,25 @@
 </head>
 <body ng-controller="BodyCtrl">
 
-<div class="navbar">
+<div id="TOP_PANEL" class="navbar">
     <div class="navbar-inner">
-        <div class="container-fluid">
-
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="/">Rythm Fiddle</a>
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li ng-class="{active: currentPath()=='/editor'}"><a ng-href="#/editor">Editor</a></li>
-                    <li ng-class="{active: currentPath()=='/all_demos'}"><a ng-href="#/all_demos">All Demos</a></li>
-                    <li>
-                        <a ng-href="{{siteInfo.rythmWebsite}}" target="_blank">Rythm Website</a>
-                    </li>
-                    <li>
-                        <a ng-href="{{siteInfo.rythmfiddleGithub}}" target="_blank">Fork me on Github</a>
-                    </li>
-                    <li><a class="btn-link" ng-click="showAbout()">About</a></li>
-                </ul>
-                <span>
-                    <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
-                    <a class="navbar-text pull-right" ng-href="#/login" ng-hide="current">Admin Login</a>
-                </span>
-            </div>
-            <!--/.nav-collapse -->
+        <a class="brand" href="/">Rythm Fiddle</a>
+        <div class="nav-collapse">
+            <ul class="nav">
+                <li ng-class="{active: currentPath()=='/editor'}"><a ng-href="#/editor">Editor</a></li>
+                <li ng-class="{active: currentPath()=='/all_demos'}"><a ng-href="#/all_demos">All Demos</a></li>
+                <li>
+                    <a ng-href="{{siteInfo.rythmWebsite}}" target="_blank">Rythm Website</a>
+                </li>
+                <li>
+                    <a ng-href="{{siteInfo.rythmfiddleGithub}}" target="_blank">Fork me on Github</a>
+                </li>
+                <li><a class="btn-link" ng-click="showAbout()">About</a></li>
+            </ul>
+            <span>
+                <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
+                <a class="navbar-text pull-right" ng-href="#/login" ng-hide="current">Admin Login</a>
+            </span>
         </div>
     </div>
 </div>

@@ -1,6 +1,16 @@
+<div class="span2" style="position:fixed;top:60px;left:20px;">
+    <ul class="nav nav-list">
+        <li ng-repeat="model in models">
+            <a class="btn-link" ng-click="scrollTo(model.className)">{{model.className}}</a>
+        </li>
+    </ul>
+</div>
+
 <div class="container">
     <div class="span10 offset1" ng-repeat="model in models">
-        <h3>{{model.className}}</h3>
-        <pre class="prettyprint nocode" ng-bind-html-unsafe="model.source|codePretty:true"></pre>
+        <div id="{{model.className}}" style="padding-top: 50px">
+            <h3>{{model.className}}</h3>
+            <pre class="prettyprint nocode" ng-bind-html-unsafe="model.source|codePretty:true"></pre>
+        </div>
     </div>
 </div>
