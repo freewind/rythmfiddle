@@ -84,6 +84,12 @@
                         ></textarea>
                 </div>
             </form>
+            <div class="alert alert-info" ng-show="getActiveFile()" style="font-family: tahoma,arial,sans-serif;color:#aaa">
+                Note: you can use <a class="sample-code-link" target="_blank" ng-href="/#/sample_model_code">sample model classes <i class="icon-external-link"></i></a>
+                and most JDK classes as argument types
+            </div>
+        </div>
+        <div class="span5" id="RESULT_PANEL" title="Render result">
             <form name="paramsForm" title="Type in parameters in JSON">
                 <div class="params">
                     <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
@@ -91,17 +97,11 @@
                               placeholder="Params in Json format"></textarea>
                 </div>
             </form>
-            <div class="alert alert-info" ng-show="getActiveFile()" style="font-family: tahoma,arial,sans-serif;color:#aaa">
-                Note: you can use <a class="sample-code-link" target="_blank" ng-href="/#/sample_model_code">sample model classes <i class="icon-external-link"></i></a>
-                and most JDK classes as argument types
-            </div>
-        </div>
-        <div class="span5" id="RESULT_PANEL" title="Render result">
             <div ng-show="result.error">
-                <pre class="template_error">{{result.error}}</pre>
+                <pre class="result template_error">{{result.error}}</pre>
             </div>
             <div ng-hide="result.error">
-                <pre class="prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
+                <pre class="result prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
     setInterval(function(){
         var h1 = $('.source .CodeMirror').height(),
             h2 = $('.params .CodeMirror').height();
-        $('#RESULT_PANEL pre').css({'min-height': (h1 + 1 + h2 - 26) + 'px'});
+        $('#RESULT_PANEL pre.result').css({'min-height': (h1 - h2 - 27) + 'px'});
     }, 300);
 </script>
 
