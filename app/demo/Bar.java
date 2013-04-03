@@ -1,6 +1,6 @@
 package demo;
 
-import com.greenlaw110.rythm.Rythm;
+import com.greenlaw110.rythm.play.RythmPlugin;
 
 import java.util.UUID;
 
@@ -19,6 +19,6 @@ public class Bar {
     }
     
     public String toString() {
-        return Rythm.substitute("Bar[@1]", id);
+        return RythmPlugin.substitute("Bar[@1]", id);
     }
 }

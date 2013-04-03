@@ -1,6 +1,6 @@
 package demo;
 
-import com.greenlaw110.rythm.Rythm;
+import com.greenlaw110.rythm.play.RythmPlugin;
 
 public class Foo {
     public Bar bar;
@@ -18,6 +18,6 @@ public class Foo {
     }
     
     public String toString() {
-        return Rythm.substitute("Foo[@1]", bar);
+        return RythmPlugin.substitute("Foo[@1]", bar);
     }
 }
