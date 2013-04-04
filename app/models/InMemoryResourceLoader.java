@@ -132,7 +132,7 @@ public class InMemoryResourceLoader implements ITemplateResourceLoader {
                 tagFile = load(name);
                 ITemplateResource tr = tagFile;
                 if (null != tr) {
-                    try {
+//                    try {
                         TemplateClass tc = engine.classes().getByTemplate(tr.getKey());
                         if (null == tc) {
                             tc = new TemplateClass(tr, engine);
@@ -150,9 +150,9 @@ public class InMemoryResourceLoader implements ITemplateResourceLoader {
                         } catch (Exception e) {
                             return tc;
                         }
-                    } catch (Exception e) {
-                        // ignore
-                    }
+//                    } catch (Exception e) {
+//                        // ignore
+//                    }
                 }
             }
         }
