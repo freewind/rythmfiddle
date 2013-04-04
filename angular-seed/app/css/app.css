@@ -39,7 +39,9 @@
 #CONTAINER {
     position: relative;
     padding: 0px 10px;
+    margin-top: 50px;
 }
+#CONTAINER form:first-child {margin-bottom: 1px;}
 
 #LEFT_PANEL {
 }
@@ -48,14 +50,23 @@
 }
 
 #RESULT_PANEL {
+    margin-top: 50px;
+    margin-left: 1px;
+}
+
+#RESULT_PANEL pre {
+    -webkit-border-radius: 0px;
+       -moz-border-radius: 0px;
+            border-radius: 0px;
 }
 
 .params .CodeMirror {
-    height: 100%;
+    height: auto;
 }
 
 .source .CodeMirror {
-    height: 500px;
+    height: auto;
+    min-height: 200px;
 }
 
 .ng-scope_xxx {

@@ -25,7 +25,9 @@
 
             <hr/>
 
-            <div><h5>Templates:</h5></div>
+            <div>
+            <h5>Templates:</h5>
+            </div>
             <ul>
                 <li ng-repeat="file in currentCode.files" ng-class="{file_active: file.active}"
                     ng-mouseenter="hover=true" ng-mouseleave="hover=false">
@@ -62,50 +64,56 @@
                    title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i></a>
             </div>
         </div>
-        <div class="span6" id="EDITOR_PANEL">
-            <form name="editorForm">
+        <div class="span5" id="EDITOR_PANEL">
+            <form name="editorForm" title="Type in template source">
                 <div class="source">
-                    <h4>Template: [{{getActiveFile().filename}}]</h4>
+                    <div style="clear:both;" class="clearfix">
+                        <h4 style="float:left;margin-right: 10px;">Template: [{{getActiveFile().filename}}]</h4>
+                        <div class="btn-toolbar" style="float: left">
+                            <button class="btn" ng-click="run()" ng-class="{'btn-primary': highlightRun}">
+                                <i class="icon-spin icon-spinner" ng-show="running"></i> Run
+                            </button>
+                            <button class="btn" ng-show="current" ng-click="save()"
+                                    ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
+                                Save
+                            </button>
+                        </div>
+                    </div>
                     <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true,'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                               name="codeSource" ng-model="getActiveFile().source" ui-keypress="{'ctrl-enter':'run($event)'}">
                         ></textarea>
                 </div>
             </form>
-            <div class="alert alert-info">
-                Note: you can use <a class="btn btn-small sample-code-link" ng-href="/#/sample_model_code">sample model classes</a>
-                and most JDK classes including <code>String</code>,<code>Integer</code> and <code>Boolean</code> as argument
-                types
+            <div class="alert alert-info" ng-show="getActiveFile()" style="font-family: tahoma,arial,sans-serif;color:#aaa">
+                Note: you can use <a class="sample-code-link" target="_blank" ng-href="/#/sample_model_code">sample model classes <i class="icon-external-link"></i></a>
+                and most JDK classes as argument types
             </div>
         </div>
-        <div class="span4" id="RESULT_PANEL">
-            <div>
-                <div>Params (in JSON format)</div>
-                <form name="paramsForm">
-                    <div class="params">
-                        <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
-                                  name="codeParams" ng-model="currentCode.params"
-                                  placeholder="Params in Json format"></textarea>
-                    </div>
-                </form>
-                <div class="btn-toolbar">
-                    <button class="btn" ng-click="run()" ng-class="{'btn-primary': highlightRun}">
-                        <i class="icon-spin icon-spinner" ng-show="running"></i> Run
-                    </button>
-                    <button class="btn" ng-show="current" ng-click="save()"
-                            ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
-                        Save
-                    </button>
+        <div class="span5" id="RESULT_PANEL" title="Render result">
+            <form name="paramsForm" title="Type in parameters in JSON">
+                <div class="params">
+                    <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
+                              name="codeParams" ng-model="currentCode.params"
+                              placeholder="Params in Json format"></textarea>
                 </div>
-            </div>
+            </form>
             <div ng-show="result.error">
-                <pre class="template_error">{{result.error}}</pre>
+                <pre class="result template_error">{{result.error}}</pre>
             </div>
             <div ng-hide="result.error">
-                <pre class="prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
+                <pre class="result prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    setInterval(function(){
+        var h1 = $('.source .CodeMirror').height(),
+            h2 = $('.params .CodeMirror').height();
+        $('#RESULT_PANEL pre.result').css({'min-height': (h1 - h2 - 27) + 'px'});
+    }, 300);
+</script>
 
 
 

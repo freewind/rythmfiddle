@@ -13,6 +13,7 @@ public class CodeFile implements ITemplateResource {
     public boolean isMain;
     public String tagName;
     public String sessionId;
+    private RythmEngine engine;
     
     @Override
     public String getKey() {
@@ -28,6 +29,11 @@ public class CodeFile implements ITemplateResource {
     @Override
     public String asTemplateContent() {
         return source;
+    }
+
+    @Override
+    public void setEngine(RythmEngine engine) {
+        this.engine = engine;
     }
 
     @Override

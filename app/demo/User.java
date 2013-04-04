@@ -1,7 +1,7 @@
 package demo;
 
 import com.alibaba.fastjson.JSON;
-import com.greenlaw110.rythm.Rythm;
+import com.greenlaw110.rythm.play.RythmPlugin;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 
 public class User {
@@ -54,11 +54,11 @@ public class User {
     }
     
     public String getName() {
-        return Rythm.toString("@_.getFirstName() @_.getLastName()", this);
+        return RythmPlugin.toString("@_.getFirstName() @_.getLastName()", this);
     }
     
     public String toString() {
-        return Rythm.toString(this);
+        return RythmPlugin.toString(this);
     }
 
     public static void main(String[] args) {
@@ -66,7 +66,7 @@ public class User {
         User user = JSON.parseObject(json, User.class);
         System.out.println(user);
         
-        String s = Rythm.substitute("{\"user\": @1}", json);
-        System.out.println(Rythm.render("@args demo.User user;@user.getName()", JSONWrapper.wrap(s)));
+        String s = RythmPlugin.substitute("{\"user\": @1}", json);
+        System.out.println(RythmPlugin.render("@args demo.User user;@user.getName()", JSONWrapper.wrap(s)));
     }
 }
