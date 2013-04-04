@@ -17,9 +17,10 @@
             </div>
 
             <div class="btn-toolbar">
-                <a class="btn" ng-href="#/editor" ng-show="current">New</a>
-                <button class="btn" ng-click="removeCurrentCode()" ng-show="current && currentCode.id">
-                    Del Cur. Demo
+                <a class="btn" ng-href="#/editor" ng-show="current" title="create new demo">New</a>
+                <button class="btn" title="delete current demo"
+                        ng-click="removeCurrentCode()" ng-show="current && currentCode.id">
+                    Delete
                 </button>
             </div>
 
@@ -76,6 +77,9 @@
                             <button class="btn" ng-show="current" ng-click="save()"
                                     ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
                                 Save
+                            </button>
+                            <button class="btn" ng-click="save(true)" ng-show="current && currentCode.id">
+                                Save As ...
                             </button>
                         </div>
                     </div>

@@ -63,7 +63,6 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     $scope.cancelEditFileName = cancelEditFileName;
     $scope.getActiveFile = getActiveFile;
     $scope.getMainFile = getMainFile;
-
     $scope.keyEventHandlerForCodeMirror = keyEventHandlerForCodeMirror;
 
     function keyEventHandlerForCodeMirror($event) {
@@ -72,7 +71,6 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
             run();
         }
     }
-
 
     $scope.$watch("currentCode", function (newVal, oldVal) {
         if (newVal == oldVal) {
@@ -190,11 +188,14 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         });
     }
 
-    function save() {
+    function save(asNew) {
         var d = $dialog.dialog({
             resolve: {
                 code: function () {
                     return $scope.currentCode;
+                },
+                saveAsNew: function () {
+                    return asNew;
                 }
             }
         });
@@ -247,12 +248,16 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
 }
 EditorCtrl.$inject = ['$scope', '$http', '$routeParams', '$dialog', '$location', '$timeout'];
 
-function SaveDialogCtrl($scope, dialog, code, $http) {
+function SaveDialogCtrl($scope, dialog, code, $http, saveAsNew) {
     $scope.code = code;
+    $scope.saveAsNew = saveAsNew;
     $scope.close = function () {
         dialog.close();
     }
     $scope.save = function () {
+        if ($scope.saveAsNew) {
+            code.id = null;
+        }
         $http.post('/api/Application/save', code).success(function (code) {
             dialog.close(code);
         }).error(function (data) {
@@ -261,7 +266,7 @@ function SaveDialogCtrl($scope, dialog, code, $http) {
     }
 }
 
-SaveDialogCtrl.$inject = ['$scope', 'dialog', 'code', '$http'];
+SaveDialogCtrl.$inject = ['$scope', 'dialog', 'code', '$http', 'saveAsNew'];
 
 function LoginCtrl($rootScope, $scope, $location, $http) {
     $scope.username = null;
