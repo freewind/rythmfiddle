@@ -13,108 +13,114 @@
                             <a ng-href="#/editor/{{code.id}}">{{code.desc}}</a></li>
                     </ul>
                 </div>
-                <!-- /btn-group -->
-            </div>
-
-            <div class="btn-toolbar">
-                <a class="btn" ng-href="#/editor" ng-show="current" title="create new demo">New</a>
-                <button class="btn" title="delete current demo"
-                        ng-click="removeCurrentCode()" ng-show="current && currentCode.id">
-                    Delete
-                </button>
             </div>
 
             <hr/>
 
-            <div>
-            <h5>Templates:</h5>
-            </div>
-            <ul>
-                <li ng-repeat="file in currentCode.files" ng-class="{file_active: file.active}"
-                    ng-mouseenter="hover=true" ng-mouseleave="hover=false">
-                    <span ng-show="file.editing">
-                        <input type="text" class="input input-small" ng-model="file.editName" autofocus="{{file.editing}}"
-                               ui-keypress="{'enter': 'saveFileName(file, $event)'}"/>
-                        <button class="btn btn-small" ng-click="saveFileName(file)"><i class="icon-ok"></i></button>
-                        <button class="btn btn-small" ng-click="cancelEditFileName(file)"><i class="icon-remove"></i>
-                        </button>
-                    </span>
-                    <span ng-hide="file.editing">
-                        <a class="btn-link" ng-click="switchFile(file)">{{file.filename}}</a>
-                        <i class="icon-heart" ng-show="file.isMain" style="color: #da4f49" title="This is entry template"> </i>
-                    </span>
-                    <span ng-hide="file.editing || !hover">
-                        <button ng-hide="file.isMain" class="btn btn-small" ng-click="setMain(file)" title="Make this file as entry">
-                            <i class="icon-heart"></i>
-                        </button>
-                        <button class="btn btn-small" ng-click="editFileName(file)" title="edit">
-                            <i class="icon-edit"></i>
-                        </button>
-                        <button ng-show="currentCode.files.length>1" class="btn btn-small" ng-click="removeFile(file)" title="remove">
-                            <i class="icon-remove"></i>
-                        </button>
-                    </span>
-                </li>
-            </ul>
             <div class="btn-toolbar">
-                <button class="btn btn-small" ng-click="newFile()">
-                    <i class="icon-plus"> </i>
-                    &nbsp;&nbsp;New file ...
+                <a ng-show="currentCode.id" class="btn" ng-href="/embed/#/{{currentCode.id}}"
+                   title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i>
+                    Compact View
+                </a>
+            </div>
+
+            <div class="btn-toolbar" ng-show="current">
+                <a class="btn" ng-href="#/editor" title="create new demo">New</a>
+                <button class="btn" title="delete current demo"
+                        ng-click="removeCurrentCode()" ng-show="currentCode.id">
+                    Delete
                 </button>
-                <a ng-show="currentCode.id" class="btn btn-small" ng-href="/embed/#/{{currentCode.id}}"
-                   title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i></a>
+            </div>
+
+            <div class="btn-toolbar" ng-show="current">
+                <button class="btn" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
+                    Save
+                </button>
+                <button class="btn" ng-click="save(true)" ng-show="currentCode.id">
+                    Save As ...
+                </button>
             </div>
         </div>
-        <div class="span5" id="EDITOR_PANEL">
-            <form name="editorForm" title="Type in template source">
-                <div class="source">
-                    <div style="clear:both;" class="clearfix">
-                        <h4 style="float:left;margin-right: 10px;">Template: [{{getActiveFile().filename}}]</h4>
-                        <div class="btn-toolbar" style="float: left">
-                            <button class="btn" ng-click="run()" ng-class="{'btn-primary': highlightRun}">
-                                <i class="icon-spin icon-spinner" ng-show="running"></i> Run
-                            </button>
-                            <button class="btn" ng-show="current" ng-click="save()"
-                                    ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
-                                Save
-                            </button>
-                            <button class="btn" ng-click="save(true)" ng-show="current && currentCode.id">
-                                Save As ...
-                            </button>
+        <div class="span10">
+            <div class="clearfix">
+                <div class="slight-buttons pull-right toolbar">
+                <span ng-show="getActiveFile()">
+                    <span class="btn" ng-click="run()">
+                        <i class="icon-play"></i>&nbsp;&nbsp;Run
+                    </span>
+
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+                    <span class="btn" title="Add new template" ng-click="newFile()">
+                        <i class="icon-plus"></i>
+                    </span>
+                    <span class="btn" title="Rename current template" ng-click="editFileName(getActiveFile())">
+                        <i class="icon-edit"></i>
+                    </span>
+                    <span class="btn" title="Delete current template" ng-click="removeFile(getActiveFile())">
+                        <i class="icon-remove"></i>
+                    </span>
+                    <span class="btn" title="Set current template as main entry" ng-click="setMain(getActiveFile())"
+                          ng-hide="getActiveFile().isMain">
+                        <i class="icon-heart"></i>
+                    </span>
+                </span>
+                </div>
+                <tabs class="ng-cloak">
+                    <pane ng-repeat="file in currentCode.files" active="file.active"
+                          heading="<i class='icon-file-alt'></i> {{ file.filename || '...' }} {{file.isMain && '(*)' || '' }}">
+                    </pane>
+                </tabs>
+                <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
+                    <form class="form-inline">
+                        <input type="text" class="input-small" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                        <button class="btn" ng-click="saveFileName(getActiveFile())">
+                            <i class="icon-ok"></i>
+                        </button>
+                        <span class="btn" ng-click="cancelEditFileName(getActiveFile())">
+                            <i class="icon-remove"></i>
+                        </span>
+                    </form>
+                    <br/>
+                </div>
+            </div>
+            <div>
+                <div class="span7" id="EDITOR_PANEL">
+                    <form name="editorForm">
+                        <div class="source">
+                            <div ng-show="getActiveFile()">
+                                <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
+                                          name="codeSource" ui-refresh="getActiveFile().active"
+                                          ng-model="getActiveFile().source"
+                                        ></textarea>
+                            </div>
                         </div>
+                    </form>
+                </div>
+                <div class="span5" id="RESULT_PANEL" title="Render result">
+                    <form name="paramsForm" title="Type in parameters in JSON">
+                        <div class="params">
+                            <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
+                                      name="codeParams" ng-model="currentCode.params"
+                                      placeholder="Params in Json format"></textarea>
+                        </div>
+                    </form>
+                    <div ng-show="result.error">
+                        <pre class="result template_error">{{result.error}}</pre>
                     </div>
-                    <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true,'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
-                              name="codeSource" ng-model="getActiveFile().source" ui-keypress="{'ctrl-enter':'run($event)'}">
-                        ></textarea>
+                    <div ng-hide="result.error">
+                        <pre class="result prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
+                    </div>
                 </div>
-            </form>
-            <div class="alert alert-info" ng-show="getActiveFile()" style="font-family: tahoma,arial,sans-serif;color:#aaa">
-                Note: you can use <a class="sample-code-link" target="_blank" ng-href="/#/sample_model_code">sample model classes <i class="icon-external-link"></i></a>
-                and most JDK classes as argument types
-            </div>
-        </div>
-        <div class="span5" id="RESULT_PANEL" title="Render result">
-            <form name="paramsForm" title="Type in parameters in JSON">
-                <div class="params">
-                    <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
-                              name="codeParams" ng-model="currentCode.params"
-                              placeholder="Params in Json format"></textarea>
-                </div>
-            </form>
-            <div ng-show="result.error">
-                <pre class="result template_error">{{result.error}}</pre>
-            </div>
-            <div ng-hide="result.error">
-                <pre class="result prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    setInterval(function(){
+    setInterval(function () {
         var h1 = $('.source .CodeMirror').height(),
-            h2 = $('.params .CodeMirror').height();
+                h2 = $('.params .CodeMirror').height();
         $('#RESULT_PANEL pre.result').css({'min-height': (h1 - h2 - 27) + 'px'});
     }, 300);
 </script>

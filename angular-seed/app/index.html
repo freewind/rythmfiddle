@@ -29,7 +29,9 @@
         <div class="nav-collapse">
             <ul class="nav">
                 <li ng-class="{active: currentPath()=='/editor'}"><a ng-href="#/editor">Editor</a></li>
-                <li ng-class="{active: currentPath()=='/all_demos'}"><a ng-href="#/all_demos">All Demos</a></li>
+                <li ng-class="{active: currentPath()=='/all_demos'}">
+                    <a ng-href="#/all_demos">All Demos</a>
+                </li>
                 <li>
                     <a ng-href="{{siteInfo.rythmWebsite}}" target="_blank">Rythm Website</a>
                 </li>
