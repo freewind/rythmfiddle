@@ -96,9 +96,10 @@
                     <form name="editorForm">
                         <div class="source">
                             <div ng-show="getActiveFile()">
-                                <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
+                                <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)', 'matchBrackets': true}"
                                           name="codeSource" ui-refresh="getActiveFile().active"
                                           ng-model="getActiveFile().source"
+                                          autofocus="autofocus"
                                         >@args String who\nHello @who!</textarea>
                             </div>
                             <div class="alert alert-info" style="border:none;background:transparent;font-family: tahoma,arial,sans-serif;color:#888">
@@ -134,6 +135,9 @@
                 h2 = $('.params .CodeMirror').height();
         $('#RESULT_PANEL pre.result').css({'height': (h1 - h2 - 27) + 'px', 'overflow-y':'auto'});
     }, 300);
+    CodeMirror.commands.save = function(cm){
+        $('button[ng-click="save()"]').click();
+    }
 </script>
 
 

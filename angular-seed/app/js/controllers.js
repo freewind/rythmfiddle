@@ -69,6 +69,12 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         var keyCode = $event.keyCode;
         if (keyCode === 10 || keyCode == 13 && $event.ctrlKey) {
             run();
+        } else if (keyCode == 84 && $event.ctrlKey && $event.altKey) {
+            $('.source textarea').focus();
+        } else if (keyCode == 80 && $event.ctrlKey && $event.altKey) {
+            $('.params textarea').focus();
+        } else {
+            //console.log(keyCode);
         }
     }
 
@@ -262,9 +268,10 @@ function SaveDialogCtrl($scope, dialog, code, $http, saveAsNew) {
         }
         $http.post('/api/Application/save', code).success(function (code) {
             dialog.close(code);
+            //TODO: $scope.run();
         }).error(function (data) {
-                alert(data);
-            });
+            alert(data);
+        });
     }
 }
 
