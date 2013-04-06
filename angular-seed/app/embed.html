@@ -23,6 +23,7 @@
     <style type="text/css">
         .params .CodeMirror {
             height: 100%;
+            min-height: 55px;
         }
 
         .source .CodeMirror {
@@ -106,6 +107,44 @@ $('body').on('click', 'a.sample-code-link', function(e){
 })
 
 });
+</script>
+<script>
+    var tags = {
+        template: {
+            label: "Template",
+            desc: "Edit template source <br> - press CTRL-ENTER to run",
+            dock: ".source .CodeMirror"
+        },
+        param: {
+            label: "Params",
+            desc: "Edit params in JSON <br/> - press CTRL-ENTER to run",
+            dock: ".params .CodeMirror"
+        },
+        result: {
+            label: "Result",
+            desc: "Render result",
+            dock: "#RESULT_PANEL div.result"
+        }
+    };
+    $(function(){
+        $('body').on({
+            mouseenter: function(){
+                var $_ = $(this).find('.tag.lbl');
+                $_.html($_.data('desc')).animate({opacity: 1.0}, 400);
+            }, 
+            mouseleave: function(){
+                var $_ = $(this).find('.tag.lbl');
+                $_.html($_.data('label')).animate({opacity: 0.7}, 400);
+            }
+        }, '.source .CodeMirror, .params .CodeMirror, #RESULT_PANEL div.result')
+    });
+    setInterval(function(){
+        if ($('.source .CodeMirror .tag.lbl').size() > 0) return;
+        $.each(tags, function(){
+            var tag = this;
+            $('<div class="tag lbl" data-desc="' + tag.desc + '" data-label="' + tag.label + '">' + tag.label + '</div>').appendTo($(tag.dock));
+        })
+    }, 500);
 </script>
 
 <link rel="stylesheet" type="text/css" href="/public/libs/angular-ui/0.4.0/angular-ui.css">

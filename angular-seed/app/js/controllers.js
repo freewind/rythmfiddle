@@ -31,12 +31,12 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     $scope.currentCode = {
         id: $routeParams.id,
         desc: null,
-        params: null,
+        params: "{\"who\": \"rythm\"}",
         showInMenu: false,
         files: [
             {
                 filename: "main.html",
-                source: "",
+                source: "@args String who\nHello @who.capFirst()!",
                 isMain: true,
                 editing: false,
                 active: true
@@ -45,7 +45,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     };
     $scope.result = {
         error: '',
-        renderedCode: ''
+        renderedCode: 'Hello Rythm!'
     }
     $scope.highlightRun = false;
     $scope.resultPageActive = false;
@@ -214,17 +214,19 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
             $scope.running = true;
             $scope.resultPageActive = true;
             $scope.highlightRun = false;
-            $scope.result = {
-                renderedCode: 'running on server ...'
-            };
+//            $scope.result = {
+//                renderedCode: 'running on server ...'
+//            };
             var start = new Date().getTime();
             $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
-                var waitMore = new Date().getTime() - start;
-                if (waitMore < 600) waitMore = 600;
-                $timeout(function () {
                     $scope.result = data;
                     $scope.running = false;
-                }, waitMore);
+//                var waitMore = new Date().getTime() - start;
+//                if (waitMore < 600) waitMore = 600;
+//                $timeout(function () {
+//                    $scope.result = data;
+//                    $scope.running = false;
+//                }, waitMore);
             });
         }
     }
