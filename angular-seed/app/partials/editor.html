@@ -1,5 +1,7 @@
 <style>
     #LEFT_PANEL .btn {padding: 5px 0;}
+    .btn.dropdown-toggle{width:100%;}
+    .btn.dropdown-toggle:hover {width:auto;}
 </style>
 <div class="container-fluid">
     <div class="row-fluid">
@@ -7,7 +9,7 @@
 
             <div class="btn-toolbar">
                 <div class="btn-group" style="width: 174px">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown" style="width: 100%;padding:5px 8px;">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown" style="padding:5px 8px;">
                         <span ng-show="currentCode.desc" style="width: 96%;display: block;float: left;overflow-x: hidden;text-overflow: ellipsis;">{{currentCode.desc}}</span>
                         <span ng-hide="currentCode.desc">Import Demo</span>
                         <span class="caret"></span></button>
