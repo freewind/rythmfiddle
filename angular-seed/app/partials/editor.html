@@ -31,15 +31,15 @@
                 <a class="btn" style="width: 85px;" ng-href="#/editor" title="create new demo">
                     <i class="icon-folder-close-alt"></i> New
                 </a>
-                <button class="btn" style="width: 85px;" title="delete current demo"
-                        ng-click="removeCurrentCode()" ng-show="currentCode.id">
-                    <i class="icon-remove"></i> Delete
+                <button class="btn" style="width: 85px;" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
+                    <i class="icon-save"></i> Save
                 </button>
             </div>
 
             <div class="btn-toolbar" ng-show="current">
-                <button class="btn" style="width: 85px;" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
-                    <i class="icon-save"></i> Save
+                <button class="btn" style="width: 85px;" title="delete current demo"
+                        ng-click="removeCurrentCode()" ng-show="currentCode.id">
+                    <i class="icon-remove"></i> Delete
                 </button>
                 <button class="btn" style="width: 85px;" ng-click="save(true)" ng-show="currentCode.id">
                     Save As ...
@@ -78,7 +78,7 @@
                 </tabs>
                 <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
                     <form class="form-inline">
-                        <input type="text" class="input-small" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                        <input type="text" class="input" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
                         <button class="btn" ng-click="saveFileName(getActiveFile())">
                             <i class="icon-ok"></i>
                         </button>
