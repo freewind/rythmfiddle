@@ -1,11 +1,14 @@
+<style>
+    #LEFT_PANEL .btn {padding: 5px 0;}
+</style>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span2" id="LEFT_PANEL">
 
             <div class="btn-toolbar">
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                        <span ng-show="currentCode.desc">{{currentCode.desc}}</span>
+                <div class="btn-group" style="width: 174px">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown" style="width: 100%;padding:5px 8px;">
+                        <span ng-show="currentCode.desc" style="width: 96%;display: block;float: left;overflow-x: hidden;text-overflow: ellipsis;">{{currentCode.desc}}</span>
                         <span ng-hide="currentCode.desc">Import Demo</span>
                         <span class="caret"></span></button>
                     <ul class="dropdown-menu">
@@ -19,24 +22,26 @@
 
             <div class="btn-toolbar">
                 <a ng-show="currentCode.id" class="btn" ng-href="/embed/#/{{currentCode.id}}"
-                   title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i>
+                   title="Show in Compact view" target="_blank" style="width:174px;padding:5px 0"><i class="icon-eye-close"> </i>
                     Compact View
                 </a>
             </div>
 
             <div class="btn-toolbar" ng-show="current">
-                <a class="btn" ng-href="#/editor" title="create new demo">New</a>
-                <button class="btn" title="delete current demo"
+                <a class="btn" style="width: 85px;" ng-href="#/editor" title="create new demo">
+                    <i class="icon-folder-close-alt"></i> New
+                </a>
+                <button class="btn" style="width: 85px;" title="delete current demo"
                         ng-click="removeCurrentCode()" ng-show="currentCode.id">
-                    Delete
+                    <i class="icon-remove"></i> Delete
                 </button>
             </div>
 
             <div class="btn-toolbar" ng-show="current">
-                <button class="btn" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
-                    Save
+                <button class="btn" style="width: 85px;" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
+                    <i class="icon-save"></i> Save
                 </button>
-                <button class="btn" ng-click="save(true)" ng-show="currentCode.id">
+                <button class="btn" style="width: 85px;" ng-click="save(true)" ng-show="currentCode.id">
                     Save As ...
                 </button>
             </div>
@@ -45,7 +50,7 @@
             <div class="clearfix">
                 <div class="slight-buttons pull-right toolbar">
                 <span ng-show="getActiveFile()">
-                    <span class="btn" ng-click="run()">
+                    <span class="btn btn-primary" ng-click="run()">
                         <i class="icon-play"></i>&nbsp;&nbsp;Run
                     </span>
 
@@ -94,6 +99,10 @@
                                           ng-model="getActiveFile().source"
                                         >@args String who\nHello @who!</textarea>
                             </div>
+                            <div class="alert alert-info" style="border:none;background:transparent;font-family: tahoma,arial,sans-serif;color:#888">
+                                Note: you can use <a class="sample-code-link" ng-href="/#/sample_model_code">sample model classes <i class="icon-external-link"></i></a>
+                                and most JDK classes as argument types
+                            </div>                       
                         </div>
                     </form>
                 </div>
