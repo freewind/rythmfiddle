@@ -105,10 +105,10 @@
                                       placeholder="Params in Json format"></textarea>
                         </div>
                     </form>
-                    <div ng-show="result.error">
+                    <div ng-show="result.error" class="error">
                         <pre class="result template_error">{{result.error}}</pre>
                     </div>
-                    <div ng-hide="result.error">
+                    <div ng-hide="result.error" class="result" style="position: relative;">
                         <pre class="result prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
                     </div>
                 </div>

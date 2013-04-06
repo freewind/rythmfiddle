@@ -20,6 +20,19 @@
     <link rel="stylesheet" type="text/css" href="/public/libs/font-awesome/3.0/css/font-awesome-ie7.min.css">
     <![endif]-->
     <link rel="stylesheet" href="/templates/css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="/public/libs/angular-ui/0.4.0/angular-ui.css">
+    <link rel="stylesheet" type="text/css" href="/public/libs/codemirror/3.1/lib/codemirror.css"/>
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/rythm-web.css"/>
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/result-pretty.css"/>
+    <style>
+        .params .CodeMirror {
+            min-height: 100px;
+        }
+        .source .CodeMirror {
+            min-height: 400px;
+        }
+    </style>
+    <script src="/public/libs/jquery-ui-1.8.24/js/jquery-1.8.2.min.js" charset="utf-8"></script>
 </head>
 <body ng-controller="BodyCtrl">
 
@@ -53,7 +66,6 @@
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
 -->
-<script src="/public/libs/jquery-ui-1.8.24/js/jquery-1.8.2.min.js" charset="utf-8"></script>
 <script src="/public/libs/underscore/1.4.3/underscore.min.js" charset="utf-8"></script>
 <script src="/public/libs/bootstrap/2.3.1/js/bootstrap.min.js" charset="utf-8"></script>
 <script src="/templates/lib/angular/angular.js"></script>
@@ -71,9 +83,42 @@
 <script src="/templates/js/filters.js"></script>
 <script src="/templates/js/directives.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/public/libs/angular-ui/0.4.0/angular-ui.css">
-<link rel="stylesheet" type="text/css" href="/public/libs/codemirror/3.1/lib/codemirror.css"/>
-<link rel="stylesheet" type="text/css" href="/public/stylesheets/rythm-web.css"/>
-<link rel="stylesheet" type="text/css" href="/public/stylesheets/result-pretty.css"/>
+<script>
+    var tags = {
+        template: {
+            label: "Template",
+            desc: "Rythm template source",
+            dock: ".source .CodeMirror"
+        },
+        param: {
+            label: "Params",
+            desc: "Params in JSON",
+            dock: ".params .CodeMirror"
+        },
+        result: {
+            label: "Result",
+            desc: "Render result",
+            dock: "#RESULT_PANEL div.result"
+        }
+    };
+    setTimeout(function(){
+        $.each(tags, function(){
+            var tag = this;
+            $('<div class="tag lbl" data-desc="' + tag.desc + '" data-label="' + tag.label + '">' + tag.label + '</div>').appendTo($(tag.dock));
+        })
+        $('body').on({
+            mouseenter: function(){
+                var $_ = $(this);
+                $_.text($_.data('desc'));
+            }, 
+            mouseleave: function(){
+                var $_ = $(this);
+                $_.text($_.data('label'));
+            }
+        }, '.tag.lbl')
+    }, 1000);
+</script>
+
+
 </body>
 </html>

@@ -86,3 +86,20 @@
 .ng-cloak {
     display: none;
 }
+
+.tag.lbl {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px 8px;
+    opacity: .7;
+    background: #888;
+    color: #eee;
+    font-size: 10pt;
+    font-family: Tahoma,Arial,Verdana,sans-serif;
+    text-shadow: none;
+    line-height: 1.5em;
+    z-index: 9999;
+    cursor: default;
+}
+.tag.lbl:hover {color: #fff;opacity:1.0}
