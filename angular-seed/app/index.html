@@ -87,12 +87,12 @@
     var tags = {
         template: {
             label: "Template",
-            desc: "Rythm template source",
+            desc: "Edit template source <br/> - press CTRL_ENTER to run",
             dock: ".source .CodeMirror"
         },
         param: {
             label: "Params",
-            desc: "Params in JSON",
+            desc: "Edit params in JSON <br/> - press CTRL-ENTER to run",
             dock: ".params .CodeMirror"
         },
         result: {
@@ -101,22 +101,25 @@
             dock: "#RESULT_PANEL div.result"
         }
     };
-    setTimeout(function(){
+    $(function(){
+        $('body').on({
+            mouseenter: function(){
+                var $_ = $(this).find('.tag.lbl');
+                $_.html($_.data('desc')).animate({opacity: 1.0}, 400);
+            }, 
+            mouseleave: function(){
+                var $_ = $(this).find('.tag.lbl');
+                $_.html($_.data('label')).animate({opacity: 0.7}, 400);
+            }
+        }, '.source .CodeMirror, .params .CodeMirror, #RESULT_PANEL div.result')
+    });
+    setInterval(function(){
+        if ($('.source .CodeMirror .tag.lbl').size() > 0) return;
         $.each(tags, function(){
             var tag = this;
             $('<div class="tag lbl" data-desc="' + tag.desc + '" data-label="' + tag.label + '">' + tag.label + '</div>').appendTo($(tag.dock));
         })
-        $('body').on({
-            mouseenter: function(){
-                var $_ = $(this);
-                $_.text($_.data('desc'));
-            }, 
-            mouseleave: function(){
-                var $_ = $(this);
-                $_.text($_.data('label'));
-            }
-        }, '.tag.lbl')
-    }, 1000);
+    }, 500);
 </script>
 
 

@@ -31,12 +31,12 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     $scope.currentCode = {
         id: $routeParams.id,
         desc: null,
-        params: null,
+        params: "{\"who\": \"rythm\"}",
         showInMenu: false,
         files: [
             {
                 filename: "main.html",
-                source: "",
+                source: "@args String who\nHello @who.capFirst()!",
                 isMain: true,
                 editing: false,
                 active: true
@@ -45,7 +45,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     };
     $scope.result = {
         error: '',
-        renderedCode: ''
+        renderedCode: 'Hello Rythm!'
     }
     $scope.highlightRun = false;
     $scope.resultPageActive = false;

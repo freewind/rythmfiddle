@@ -85,24 +85,24 @@
                 </div>
             </div>
             <div>
-                <div class="span7" id="EDITOR_PANEL">
+                <div class="span6" id="EDITOR_PANEL">
                     <form name="editorForm">
                         <div class="source">
                             <div ng-show="getActiveFile()">
                                 <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                                           name="codeSource" ui-refresh="getActiveFile().active"
                                           ng-model="getActiveFile().source"
-                                        ></textarea>
+                                        >@args String who\nHello @who!</textarea>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="span5" id="RESULT_PANEL" title="Render result">
+                <div class="span6" id="RESULT_PANEL">
                     <form name="paramsForm" title="Type in parameters in JSON">
                         <div class="params">
                             <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                                       name="codeParams" ng-model="currentCode.params"
-                                      placeholder="Params in Json format"></textarea>
+                                      placeholder="Params in Json format">{"who": "Rythm"}</textarea>
                         </div>
                     </form>
                     <div ng-show="result.error" class="error">
