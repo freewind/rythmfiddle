@@ -214,17 +214,19 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
             $scope.running = true;
             $scope.resultPageActive = true;
             $scope.highlightRun = false;
-            $scope.result = {
-                renderedCode: 'running on server ...'
-            };
+//            $scope.result = {
+//                renderedCode: 'running on server ...'
+//            };
             var start = new Date().getTime();
             $http.post('/api/Application/run', $scope.currentCode).success(function (data) {
-                var waitMore = new Date().getTime() - start;
-                if (waitMore < 600) waitMore = 600;
-                $timeout(function () {
                     $scope.result = data;
                     $scope.running = false;
-                }, waitMore);
+//                var waitMore = new Date().getTime() - start;
+//                if (waitMore < 600) waitMore = 600;
+//                $timeout(function () {
+//                    $scope.result = data;
+//                    $scope.running = false;
+//                }, waitMore);
             });
         }
     }
