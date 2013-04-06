@@ -1,11 +1,16 @@
+<style>
+    #LEFT_PANEL .btn {padding: 5px 0;}
+    .btn.dropdown-toggle{width:100%;}
+    .btn.dropdown-toggle:hover {width:auto;min-width: 100%}
+</style>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span2" id="LEFT_PANEL">
 
             <div class="btn-toolbar">
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                        <span ng-show="currentCode.desc">{{currentCode.desc}}</span>
+                <div class="btn-group" style="width: 174px">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown" style="padding:5px 8px;">
+                        <span ng-show="currentCode.desc" style="width: 96%;display: block;float: left;overflow-x: hidden;text-overflow: ellipsis;">{{currentCode.desc}}</span>
                         <span ng-hide="currentCode.desc">Import Demo</span>
                         <span class="caret"></span></button>
                     <ul class="dropdown-menu">
@@ -19,24 +24,26 @@
 
             <div class="btn-toolbar">
                 <a ng-show="currentCode.id" class="btn" ng-href="/embed/#/{{currentCode.id}}"
-                   title="Show in Compact view" target="_blank"><i class="icon-eye-close"> </i>
+                   title="Show in Compact view" target="_blank" style="width:174px;padding:5px 0"><i class="icon-eye-close"> </i>
                     Compact View
                 </a>
             </div>
 
             <div class="btn-toolbar" ng-show="current">
-                <a class="btn" ng-href="#/editor" title="create new demo">New</a>
-                <button class="btn" title="delete current demo"
-                        ng-click="removeCurrentCode()" ng-show="currentCode.id">
-                    Delete
+                <a class="btn" style="width: 85px;" ng-href="#/editor" title="create new demo">
+                    <i class="icon-folder-close-alt"></i> New
+                </a>
+                <button class="btn" style="width: 85px;" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
+                    <i class="icon-save"></i> Save
                 </button>
             </div>
 
             <div class="btn-toolbar" ng-show="current">
-                <button class="btn" ng-click="save()" ng-class="{'btn-primary':editorForm.codeSource.$dirty || paramsForm.codeParams.$dirty}">
-                    Save
+                <button class="btn" style="width: 85px;" title="delete current demo"
+                        ng-click="removeCurrentCode()" ng-show="currentCode.id">
+                    <i class="icon-remove"></i> Delete
                 </button>
-                <button class="btn" ng-click="save(true)" ng-show="currentCode.id">
+                <button class="btn" style="width: 85px;" ng-click="save(true)" ng-show="currentCode.id">
                     Save As ...
                 </button>
             </div>
@@ -45,7 +52,7 @@
             <div class="clearfix">
                 <div class="slight-buttons pull-right toolbar">
                 <span ng-show="getActiveFile()">
-                    <span class="btn" ng-click="run()">
+                    <span class="btn btn-primary" ng-click="run()">
                         <i class="icon-play"></i>&nbsp;&nbsp;Run
                     </span>
 
@@ -73,7 +80,7 @@
                 </tabs>
                 <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
                     <form class="form-inline">
-                        <input type="text" class="input-small" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                        <input type="text" class="input" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
                         <button class="btn" ng-click="saveFileName(getActiveFile())">
                             <i class="icon-ok"></i>
                         </button>
@@ -85,30 +92,34 @@
                 </div>
             </div>
             <div>
-                <div class="span7" id="EDITOR_PANEL">
+                <div class="span6" id="EDITOR_PANEL">
                     <form name="editorForm">
                         <div class="source">
                             <div ng-show="getActiveFile()">
                                 <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'rythm','lineNumbers': true, 'onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                                           name="codeSource" ui-refresh="getActiveFile().active"
                                           ng-model="getActiveFile().source"
-                                        ></textarea>
+                                        >@args String who\nHello @who!</textarea>
                             </div>
+                            <div class="alert alert-info" style="border:none;background:transparent;font-family: tahoma,arial,sans-serif;color:#888">
+                                Note: you can use <a class="sample-code-link" ng-href="/#/sample_model_code">sample model classes <i class="icon-external-link"></i></a>
+                                and most JDK classes as argument types
+                            </div>                       
                         </div>
                     </form>
                 </div>
-                <div class="span5" id="RESULT_PANEL" title="Render result">
+                <div class="span6" id="RESULT_PANEL">
                     <form name="paramsForm" title="Type in parameters in JSON">
                         <div class="params">
                             <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
                                       name="codeParams" ng-model="currentCode.params"
-                                      placeholder="Params in Json format"></textarea>
+                                      placeholder="Params in Json format">{"who": "Rythm"}</textarea>
                         </div>
                     </form>
-                    <div ng-show="result.error">
+                    <div ng-show="result.error" class="error">
                         <pre class="result template_error">{{result.error}}</pre>
                     </div>
-                    <div ng-hide="result.error">
+                    <div ng-hide="result.error" class="result" style="position: relative;">
                         <pre class="result prettyprint" ng-bind-html-unsafe="result.renderedCode|codePretty"></pre>
                     </div>
                 </div>
@@ -121,7 +132,7 @@
     setInterval(function () {
         var h1 = $('.source .CodeMirror').height(),
                 h2 = $('.params .CodeMirror').height();
-        $('#RESULT_PANEL pre.result').css({'min-height': (h1 - h2 - 27) + 'px'});
+        $('#RESULT_PANEL pre.result').css({'height': (h1 - h2 - 27) + 'px', 'overflow-y':'auto'});
     }, 300);
 </script>
 
