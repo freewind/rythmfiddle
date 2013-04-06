@@ -8,7 +8,7 @@ angular.module('myApp.filters', []).
             return String(text).replace(/\%VERSION\%/mg, version);
         }
     }]).
-    
+
     filter('codePretty', function () {
         function escape(str) {
             // checkout http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
@@ -17,17 +17,17 @@ angular.module('myApp.filters', []).
                 '<': '&lt;',
                 '>': '&gt;'
             };
-            
+
             function replaceTag(tag) {
                 return tagsToReplace[tag] || tag;
             }
-            
+
             function safe_tags_replace(str) {
-                return str.replace(/[&<>]/g, replaceTag);
+                return str ? str.replace(/[&<>]/g, replaceTag) : str;
             }
-            
+
             return safe_tags_replace(str);
-            
+
 //            if (str) {
 //                return str.replace(/[<]/g, "&lt;").replace(/[>]/g, "&gt;");
 //            }

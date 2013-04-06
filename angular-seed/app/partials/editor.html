@@ -80,7 +80,8 @@
                 </tabs>
                 <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
                     <form class="form-inline">
-                        <input type="text" class="input" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                        <input type="text" class="input-small" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"
+                               ui-keypress="{'esc':'cancelEditFileName(getActiveFile())'}"/>
                         <button class="btn" ng-click="saveFileName(getActiveFile())">
                             <i class="icon-ok"></i>
                         </button>
