@@ -22,12 +22,12 @@
 
             <hr/>
 
-            <div class="btn-toolbar">
-                <a ng-show="currentCode.id" class="btn" ng-href="/embed/#/{{currentCode.id}}"
-                   title="Show in Compact view" target="_blank" style="width:174px;padding:5px 0"><i class="icon-eye-close"> </i>
-                    Compact View
-                </a>
-            </div>
+            <!--<div class="btn-toolbar">-->
+                <!--<a ng-show="currentCode.id" class="btn" ng-href="/embed/#/{{currentCode.id}}"-->
+                   <!--title="Show in Compact view" target="_blank" style="width:174px;padding:5px 0"><i class="icon-eye-close"> </i>-->
+                    <!--Compact View-->
+                <!--</a>-->
+            <!--</div>-->
 
             <div class="btn-toolbar" ng-show="current">
                 <a class="btn" style="width: 85px;" ng-href="#/editor" title="create new demo">
@@ -81,7 +81,7 @@
                 <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
                     <form class="form-inline">
                         <input type="text" class="input" ng-model="getActiveFile().editName" ui-keydown="{esc: 'cancelRenameFile()'}" autofocus="{{getActiveFile().editing}}"/>
-                        <button class="btn" ng-click="saveFileName(getActiveFile())">
+                        <button class="btn" ng-click="saveFileName()">
                             <i class="icon-ok"></i>
                         </button>
                         <span class="btn" ng-click="cancelRenameFile()">
@@ -100,6 +100,7 @@
                                           name="codeSource" ui-refresh="getActiveFile().active"
                                           ng-model="getActiveFile().source"
                                           autofocus="autofocus"
+                                          ui-event="{focus: storeCurFocus()}"
                                         >@args String who\nHello @who!</textarea>
                             </div>
                             <div class="alert alert-info" style="border:none;background:transparent;font-family: tahoma,arial,sans-serif;color:#888">
@@ -113,7 +114,7 @@
                     <form name="paramsForm" title="Type in parameters in JSON">
                         <div class="params">
                             <textarea class="ng-cloak" ui-codemirror="{theme:'rythm-web',mode:'javascript','onKeyEvent':'keyEventHandlerForCodeMirror($event)'}"
-                                      name="codeParams" ng-model="currentCode.params"
+                                      name="codeParams" ng-model="currentCode.params" ui-event="{focus: storeCurFocus()}"
                                       placeholder="Params in Json format">{"who": "Rythm"}</textarea>
                         </div>
                     </form>
@@ -153,6 +154,11 @@
             } else {
                 $s.focus();
             }
+        } else if (event.altKey && (47 < event.which) && (58 > event.which)) {
+            //alt 1 -> alt 10
+            var id = event.which - 48; 
+            if (id == 0) id = 10;
+            $('ul.nav-tabs li:nth-child(' + id + ') a').trigger('click');
         }
     });
 </script>

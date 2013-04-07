@@ -136,7 +136,15 @@ $('body').on('click', 'a.sample-code-link', function(e){
                 var $_ = $(this).find('.tag.lbl');
                 $_.html($_.data('label')).animate({opacity: 0.7}, 400);
             }
-        }, '.source .CodeMirror, .params .CodeMirror, #RESULT_PANEL div.result')
+        }, '.source .CodeMirror, .params .CodeMirror, #RESULT_PANEL div.result');
+        $('body').on('click', '#view_in_fiddle', function(e){
+            if (top === window) {
+            } else {
+                e.stopImmediatePropagation();
+                window._trigger_parent("_open_in_fiddle", {fiddle_id: $(this).data('id')});
+                return false;
+            }
+        });
     });
     setInterval(function(){
         if ($('.source .CodeMirror .tag.lbl').size() > 0) return;

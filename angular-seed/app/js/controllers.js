@@ -77,10 +77,13 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         }
     };
     $scope.restoreFocus = function() {
-        if ($scope.$focus) {
-            $scope.$focus().focus();
-        }
-        else alert("no focus");
+        setTimeout(function(){
+            if ($scope.$focus) {
+                $scope.$focus().focus();
+            } else {
+                $('.source textarea').focus();
+            }
+        },1);
     }
 
     function keyEventHandlerForCodeMirror($event) {
@@ -166,6 +169,8 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     // 1. not null
     // 2. unique
     function saveFileName(file) {
+        if (!file) file = getActiveFile();
+        if (!file) return;
         var editName = file.editName;
         if (!editName) {
             alert('filename should not be empty');
@@ -182,6 +187,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
             file.filename = editName;
             file.editing = false;
         }
+        $scope.restoreFocus();
     }
 
     function renameFile(file) {
@@ -199,7 +205,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         }
         file.editName = null;
         file.editing = false;
-        setTimeout(function(){$scope.restoreFocus();}, 1);
+        $scope.restoreFocus();
     }
 
     function removeCurrentCode() {
