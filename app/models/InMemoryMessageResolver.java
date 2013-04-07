@@ -75,10 +75,14 @@ public class InMemoryMessageResolver extends InMemoryResourceLoader implements I
 
         Code code = Cache.get(key(CACHE_KEY, sessionId), Code.class);
         for (CodeFile cf: code.files) {
-            if (cf.filename.startsWith("messages.")) {
+            String fn0 = cf.filename;
+            if (fn0.startsWith("messages.") || fn0.startsWith("msg.") || fn0.startsWith("m.")) {
                 String s = locale.toString();
                 while(true) {
-                    String retVal = null, fn = "messages." + s;
+                    String retVal = null, fn = null;
+                    if (fn0.startsWith("messages.")) fn = "messages." + s;
+                    else if (fn0.startsWith("msg.")) fn = "msg." + s;
+                    else fn = "m." + s;
                     if (cf.filename.startsWith(fn)) {
                         retVal = _msg(template, locale, cf, key, args);
                         if (null != retVal) return retVal;
