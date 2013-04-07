@@ -59,22 +59,40 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     $scope.switchFile = switchFile;
     $scope.removeFile = removeFile;
     $scope.setMain = setMain;
-    $scope.editFileName = editFileName;
-    $scope.cancelEditFileName = cancelEditFileName;
+    $scope.renameFile = renameFile;
+    $scope.cancelRenameFile = cancelRenameFile;
     $scope.getActiveFile = getActiveFile;
     $scope.getMainFile = getMainFile;
     $scope.keyEventHandlerForCodeMirror = keyEventHandlerForCodeMirror;
+    $scope.ta = {
+        $source: function() {return $('.source textarea');},
+        $params: function() {return $('.params textarea');}
+    };
+    $scope.$focus = false;
+    $scope.storeCurFocus = function(){
+        $scope.$focus = $scope.ta.$source;
+        var $p = $scope.ta.$params();
+        if ($p.is(":focus")) {
+            $scope.$focus = $scope.ta.$params;
+        }
+    };
+    $scope.restoreFocus = function() {
+        if ($scope.$focus) {
+            $scope.$focus().focus();
+        }
+        else alert("no focus");
+    }
 
     function keyEventHandlerForCodeMirror($event) {
         var keyCode = $event.keyCode;
         if (keyCode === 10 || keyCode == 13 && $event.ctrlKey) {
             run();
-        } else if (keyCode == 84 && $event.ctrlKey && $event.altKey) {
-            $('.source textarea').focus();
-        } else if (keyCode == 80 && $event.ctrlKey && $event.altKey) {
-            $('.params textarea').focus();
-        } else {
-            //console.log(keyCode);
+        } else if (keyCode == 84 && $event.ctrlKey && $event.altKey) /*ctrl-al-t*/ {
+            var $t = $scope.ta.$source(), $p = $scope.ta.$params();
+            if ($t.is(':focus')) $p.focus();
+            else $t.focus();
+        } else if (keyCode == 113 /*F2*/) {
+            renameFile();
         }
     }
 
@@ -114,6 +132,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     }
 
     function setMain(file) {
+        if (!file) file = getActiveFile();
         _.each($scope.currentCode.files, function (file) {
             file.isMain = false;
         });
@@ -128,6 +147,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     }
 
     function removeFile(file, noAlert) {
+        if (!file) file = getActiveFile();
         if ($scope.currentCode.files.length > 1) {
             if (noAlert || confirm('Delete this template?')) {
                 $scope.currentCode.files = _.without($scope.currentCode.files, file);
@@ -164,18 +184,22 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         }
     }
 
-    function editFileName(file) {
+    function renameFile(file) {
+        $scope.storeCurFocus();
+        if (!file) file = getActiveFile();
         file.editName = file.filename;
         file.editing = !file.editing;
     }
 
-    function cancelEditFileName(file) {
+    function cancelRenameFile(file) {
+        if (!file) file = getActiveFile();
         if (!file.filename) {
             removeFile(file, true);
             return;
         }
         file.editName = null;
         file.editing = false;
+        setTimeout(function(){$scope.restoreFocus();}, 1);
     }
 
     function removeCurrentCode() {
@@ -215,7 +239,7 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
     }
 
     function run() {
-        if ($scope.currentCode.files.length > 0) {
+        if ($scope.currentCode.files.length > 0) { 
             if ($scope.running) return;
             $scope.running = true;
             $scope.resultPageActive = true;
@@ -252,7 +276,6 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
             newOne.isMain = true;
         }
     }
-
 }
 EditorCtrl.$inject = ['$scope', '$http', '$routeParams', '$dialog', '$location', '$timeout'];
 
@@ -273,6 +296,7 @@ function SaveDialogCtrl($scope, dialog, code, $http, saveAsNew) {
             alert(data);
         });
     }
+    
 }
 
 SaveDialogCtrl.$inject = ['$scope', 'dialog', 'code', '$http', 'saveAsNew'];

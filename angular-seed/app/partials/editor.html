@@ -61,13 +61,13 @@
                     <span class="btn" title="Add new template" ng-click="newFile()">
                         <i class="icon-plus"></i>
                     </span>
-                    <span class="btn" title="Rename current template" ng-click="editFileName(getActiveFile())">
+                    <span class="btn" title="Rename current template" ng-click="renameFile()">
                         <i class="icon-edit"></i>
                     </span>
-                    <span class="btn" title="Delete current template" ng-click="removeFile(getActiveFile())">
+                    <span class="btn" title="Delete current template" ng-click="removeFile()">
                         <i class="icon-remove"></i>
                     </span>
-                    <span class="btn" title="Set current template as main entry" ng-click="setMain(getActiveFile())"
+                    <span class="btn" title="Set current template as main entry" ng-click="setMain()"
                           ng-hide="getActiveFile().isMain">
                         <i class="icon-heart"></i>
                     </span>
@@ -80,11 +80,11 @@
                 </tabs>
                 <div class="edit_panel form-inline" ng-show="getActiveFile().editing">
                     <form class="form-inline">
-                        <input type="text" class="input" ng-model="getActiveFile().editName" autofocus="{{getActiveFile().editing}}"/>
+                        <input type="text" class="input" ng-model="getActiveFile().editName" ui-keydown="{esc: 'cancelRenameFile()'}" autofocus="{{getActiveFile().editing}}"/>
                         <button class="btn" ng-click="saveFileName(getActiveFile())">
                             <i class="icon-ok"></i>
                         </button>
-                        <span class="btn" ng-click="cancelEditFileName(getActiveFile())">
+                        <span class="btn" ng-click="cancelRenameFile()">
                             <i class="icon-remove"></i>
                         </span>
                     </form>
@@ -138,6 +138,11 @@
     CodeMirror.commands.save = function(cm){
         $('button[ng-click="save()"]').click();
     }
+    $(window).on('keydown', function(event) {
+        if (event.which == 113) { // F2
+            $('.btn[ng-click="renameFile()"]').click();
+        }
+    });
 </script>
 
 
