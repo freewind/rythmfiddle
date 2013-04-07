@@ -36,7 +36,7 @@ public class InMemoryResourceLoader implements ITemplateResourceLoader {
         return (CodeFile)Cache.get(key(path, sessionId));
     }
 
-    private static String key(String path, String sessionId) {
+    protected static String key(String path, String sessionId) {
         return sessionId + "://" + path;
     }
 

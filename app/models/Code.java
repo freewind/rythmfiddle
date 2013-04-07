@@ -15,6 +15,7 @@ import demo.Order;
 import play.mvc.Scope;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 import static common.Helper.eq;
@@ -24,7 +25,7 @@ import static common.Helper.eq;
  * Date: 13-3-18
  * Time: 下午6:07
  */
-public class Code {
+public class Code implements Serializable {
 
     public String id;
     public String desc;
@@ -81,6 +82,7 @@ public class Code {
                     public void setRenderArgs(ITemplate template) {
                     }
                 });
+                conf.put("rythm.i18n.message.resolver", new InMemoryMessageResolver(sessId));
                 //conf.put("log.source.java.enabled", false);
                 //conf.put("log.source.template.enabled", false);
                 e = new RythmEngine(conf);
@@ -137,6 +139,7 @@ public class Code {
         for (CodeFile file : files) {
             file.save(sessionId);
         }
+        InMemoryMessageResolver.save(this, sessionId);
     }
 }
 
