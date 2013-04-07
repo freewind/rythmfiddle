@@ -141,6 +141,18 @@
     $(window).on('keydown', function(event) {
         if (event.which == 113) { // F2
             $('.btn[ng-click="renameFile()"]').click();
+        } else {
+            //console.log(event);
+        }
+    });
+    $(window).on('keyup', function(event){
+        if (event.which == 84 && event.ctrlKey && event.altKey) { // ctrl-alt-t
+            var $s = $('.source textarea'), $p = $('.params textarea');
+            if ($s.is(':focus')) {
+                $p.focus();
+            } else {
+                $s.focus();
+            }
         }
     });
 </script>

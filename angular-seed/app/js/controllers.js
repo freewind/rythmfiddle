@@ -88,9 +88,9 @@ function EditorCtrl($scope, $http, $routeParams, $dialog, $location, $timeout) {
         if (keyCode === 10 || keyCode == 13 && $event.ctrlKey) {
             run();
         } else if (keyCode == 84 && $event.ctrlKey && $event.altKey) /*ctrl-al-t*/ {
-            var $t = $scope.ta.$source(), $p = $scope.ta.$params();
-            if ($t.is(':focus')) $p.focus();
-            else $t.focus();
+//            var $t = $scope.ta.$source(), $p = $scope.ta.$params();
+//            if ($t.is(':focus')) $p.focus();
+//            else $t.focus();
         } else if (keyCode == 113 /*F2*/) {
             renameFile();
         }
