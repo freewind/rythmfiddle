@@ -92,7 +92,7 @@
         param: {
             label: "Params",
             desc: "Edit params in JSON <br/> - press CTRL-ENTER to run",
-            dock: ".params .CodeMirror"
+            dock: ".params"
         },
         result: {
             label: "Result",
@@ -110,7 +110,7 @@
                 var $_ = $(this).find('.tag.lbl');
                 $_.html($_.data('label')).animate({opacity: 0.7}, 400);
             }
-        }, '.source .CodeMirror, .params .CodeMirror, #RESULT_PANEL div.result')
+        }, '.source .CodeMirror, .params, #RESULT_PANEL div.result')
         var wh = $(window).height();
         setInterval(function(){
             $('.source .CodeMirror').animate({'height': (wh - 220) + 'px'});
