@@ -52,10 +52,14 @@
                 </li>
                 <li><a class="btn-link" ng-click="showAbout()">About</a></li>
             </ul>
-            <span>
-                <p class="navbar-text pull-right" ng-show="current">Logged in as {{current}}</p>
-                <a class="navbar-text pull-right" ng-href="#/login" ng-hide="current">Admin Login</a>
-            </span>
+            <ul class="pull-right nav">
+                <li class="navbar-text" ng-show="current">
+                    Logged in as {{current}}
+                </li>
+                <li ng-hide="current">
+                    <a ng-href="#/login">Admin Login</a>    
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -92,7 +96,7 @@
         param: {
             label: "Params",
             desc: "Edit params in JSON <br/> - press CTRL-ENTER to run",
-            dock: ".params"
+            dock: ".params .CodeMirror"
         },
         result: {
             label: "Result",
@@ -110,10 +114,15 @@
                 var $_ = $(this).find('.tag.lbl');
                 $_.html($_.data('label')).animate({opacity: 0.7}, 400);
             }
-        }, '.source .CodeMirror, .params, #RESULT_PANEL div.result')
+        }, '.source .CodeMirror, .params .CodeMirror, #RESULT_PANEL div.result')
         var wh = $(window).height();
         setInterval(function(){
-            $('.source .CodeMirror').animate({'height': (wh - 220) + 'px'});
+            var h = wh - 220;
+            $('.source .CodeMirror').animate({'height': h + 'px'});
+            var ph = $('.params .CodeMirror').height();
+            if (ph > h / 2) {
+                $('.params .CodeMirror').animate({height: (h / 2) + 'px'});
+            }
         }, 1000);
     });
     setInterval(function(){

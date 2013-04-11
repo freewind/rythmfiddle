@@ -61,12 +61,7 @@
 
 .params .CodeMirror {
     height: auto;
-}
-
-.params {
-    max-height: 300px;
-    overflow-y: auto;
-    position: relative;
+    min-height: 50px;
 }
 
 .source .CodeMirror {
