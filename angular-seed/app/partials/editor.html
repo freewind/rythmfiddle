@@ -133,7 +133,7 @@
 <script type="text/javascript">
     setInterval(function () {
         var h1 = $('.source .CodeMirror').height(),
-                h2 = $('.params .CodeMirror').height();
+                h2 = $('.params').height();
         $('#RESULT_PANEL pre.result').css({'height': (h1 - h2 - 27) + 'px', 'overflow-y':'auto'});
     }, 300);
     CodeMirror.commands.save = function(cm){

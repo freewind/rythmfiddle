@@ -46,7 +46,8 @@ public class Code implements Serializable {
     private static final SandboxThreadFactory stf = new SandboxThreadFactory(rsm, sandboxPassword, null);
 
     private RythmEngine engine() {
-        String sessId = Scope.Session.current().getId();
+        final Scope.Session sess = Scope.Session.current();
+        final String sessId = sess.getId();
         synchronized (lock) {
             RythmEngine e = engines.get(sessId);
             if (null == e) {
