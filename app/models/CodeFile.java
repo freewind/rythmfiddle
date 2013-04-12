@@ -2,7 +2,6 @@ package models;
 
 import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.extension.ICodeType;
-import com.greenlaw110.rythm.logger.Logger;
 import com.greenlaw110.rythm.resource.ITemplateResource;
 import com.greenlaw110.rythm.resource.TemplateResourceBase;
 import com.greenlaw110.rythm.utils.S;
@@ -43,7 +42,6 @@ public class CodeFile implements ITemplateResource {
             source = cf.source;
             return true;
         }
-        Logger.error(">>>>>>>> not changed <<<<<<<<");
         return false;
     }
 
@@ -62,8 +60,8 @@ public class CodeFile implements ITemplateResource {
 
     private static String getFullTagName(String key) {
         if (key.startsWith("/")) key = key.substring(1);
-        int pos = key.lastIndexOf(".");
-        if (-1 != pos) key = key.substring(0, pos);
+//        int pos = key.lastIndexOf(".");
+//        if (-1 != pos) key = key.substring(0, pos);
         return key.replace('/', '.');
     }
 

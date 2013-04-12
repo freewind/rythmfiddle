@@ -9,9 +9,11 @@ import com.greenlaw110.rythm.play.RythmPlugin;
 import com.greenlaw110.rythm.sandbox.RythmSecurityManager;
 import com.greenlaw110.rythm.sandbox.SandboxThreadFactory;
 import com.greenlaw110.rythm.template.ITemplate;
+import com.greenlaw110.rythm.utils.F;
 import com.greenlaw110.rythm.utils.JSONWrapper;
 import com.greenlaw110.rythm.utils.S;
 import demo.Order;
+import play.jobs.Every;
 import play.mvc.Scope;
 
 import java.io.IOException;
@@ -39,7 +41,7 @@ public class Code implements Serializable {
 
     private static final Object lock = new Object();
 
-    private static final Map<String, RythmEngine> engines = new HashMap<String, RythmEngine>();
+    private static final Map<String, F.T2<RythmEngine, Long>> engines = new HashMap<String, F.T2<RythmEngine, Long>>();
 
     private static final String sandboxPassword = UUID.randomUUID().toString();
     private static final RythmSecurityManager rsm = new RythmSecurityManager(null, sandboxPassword, null);
@@ -49,8 +51,9 @@ public class Code implements Serializable {
         final Scope.Session sess = Scope.Session.current();
         final String sessId = sess.getId();
         synchronized (lock) {
-            RythmEngine e = engines.get(sessId);
-            if (null == e) {
+            F.T2<RythmEngine, Long> t2 = engines.get(sessId);
+            RythmEngine e = null;
+            if (t2 == null) {
                 Map<String, Object> conf = new HashMap<String, Object>();
                 conf.put("resource.loader", new InMemoryResourceLoader(sessId));
                 conf.put("default.code_type", ICodeType.DefImpl.HTML);
@@ -71,12 +74,12 @@ public class Code implements Serializable {
 
                     @Override
                     public String sourceCode() {
-                        return null; 
+                        return null;
                     }
 
                     @Override
                     public Map<String, ?> getRenderArgDescriptions() {
-                        return Collections.EMPTY_MAP; 
+                        return Collections.EMPTY_MAP;
                     }
 
                     @Override
@@ -88,8 +91,10 @@ public class Code implements Serializable {
                 //conf.put("log.source.template.enabled", false);
                 e = new RythmEngine(conf);
                 e.registerTransformer(Order.class);
-                engines.put(sessId, e);
+            } else {
+                e = t2._1;
             }
+            engines.put(sessId, F.T2(e, System.currentTimeMillis()));
             return e;
         }
     }
@@ -142,5 +147,21 @@ public class Code implements Serializable {
         }
         InMemoryMessageResolver.save(this, sessionId);
     }
+    
+    @Every("10mn")
+    public static class SessionCleaner extends play.jobs.Job {
+        @Override
+        public void doJob() throws Exception {
+            List<String> toBeRemoved = new ArrayList<String>();
+            for (String sessId : engines.keySet()) {
+                F.T2<RythmEngine, Long> t2 = engines.get(sessId);
+                if ((t2._2 + 1000 * 60 * 5) < System.currentTimeMillis()) toBeRemoved.add(sessId);
+            }
+            for (String sessId : toBeRemoved) {
+                engines.remove(sessId);
+            }
+        }
+    }
+    
 }
 
