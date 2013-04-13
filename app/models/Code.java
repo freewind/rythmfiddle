@@ -1,5 +1,6 @@
 package models;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.RythmEngine;
@@ -47,48 +48,59 @@ public class Code implements Serializable {
     private static final RythmSecurityManager rsm = new RythmSecurityManager(null, sandboxPassword, null);
     private static final SandboxThreadFactory stf = new SandboxThreadFactory(rsm, sandboxPassword, null);
 
-    private RythmEngine engine() {
+    private Properties _conf(Properties userConf, String sessId) {
+        Properties conf = new Properties();
+        if (null != userConf) conf.putAll(userConf);
+        conf.put("resource.loader", new InMemoryResourceLoader(sessId));
+        conf.put("default.code_type", ICodeType.DefImpl.HTML);
+        conf.put("engine.mode", Rythm.Mode.dev);
+        conf.put("sandbox.security_manager", rsm);
+        conf.put("sandbox.thread_factory", stf);
+        RythmEngine playRE = RythmPlugin.engine;
+        conf.put("engine.class_loader.parent", playRE.classLoader().getParent());
+        conf.put("engine.class_loader.bytecode_helper", playRE.conf().byteCodeHelper());
+        conf.put("sandbox.allowed_system_properties", "java.io.tmpdir,file.encoding,user.dir,line.separator,java.vm.name,java.protocol.handler.pkgs,suppressRawWhenUnchecked");
+        conf.put("codegen.source_code_enhancer", new ISourceCodeEnhancer() {
+            @Override
+            public List<String> imports() {
+                List<String> l = new ArrayList<String>();
+                l.add("demo.*");
+                return l;
+            }
+
+            @Override
+            public String sourceCode() {
+                return null;
+            }
+
+            @Override
+            public Map<String, ?> getRenderArgDescriptions() {
+                return Collections.EMPTY_MAP;
+            }
+
+            @Override
+            public void setRenderArgs(ITemplate template) {
+            }
+        });
+        conf.put("rythm.i18n.message.resolver", new InMemoryMessageResolver(sessId));
+        //conf.put("log.source.java.enabled", false);
+        //conf.put("log.source.template.enabled", false);
+        return conf;
+    }
+
+    private RythmEngine engine(Properties p) {
         final Scope.Session sess = Scope.Session.current();
         final String sessId = sess.getId();
+        Properties conf = _conf(p, sessId);
+        if (null != p && !p.isEmpty()) {
+            RythmEngine e = new RythmEngine(conf);
+            e.registerTransformer(Order.class);
+            return e;
+        }
         synchronized (lock) {
             F.T2<RythmEngine, Long> t2 = engines.get(sessId);
-            RythmEngine e = null;
+            RythmEngine e;
             if (t2 == null) {
-                Map<String, Object> conf = new HashMap<String, Object>();
-                conf.put("resource.loader", new InMemoryResourceLoader(sessId));
-                conf.put("default.code_type", ICodeType.DefImpl.HTML);
-                conf.put("engine.mode", Rythm.Mode.dev);
-                conf.put("sandbox.security_manager", rsm);
-                conf.put("sandbox.thread_factory", stf);
-                RythmEngine playRE = RythmPlugin.engine;
-                conf.put("engine.class_loader.parent", playRE.classLoader().getParent());
-                conf.put("engine.class_loader.bytecode_helper", playRE.conf().byteCodeHelper());
-                conf.put("sandbox.allowed_system_properties", "java.io.tmpdir,file.encoding,user.dir,line.separator,java.vm.name,java.protocol.handler.pkgs,suppressRawWhenUnchecked");
-                conf.put("codegen.source_code_enhancer", new ISourceCodeEnhancer() {
-                    @Override
-                    public List<String> imports() {
-                        List<String> l = new ArrayList<String>();
-                        l.add("demo.*");
-                        return l;
-                    }
-
-                    @Override
-                    public String sourceCode() {
-                        return null;
-                    }
-
-                    @Override
-                    public Map<String, ?> getRenderArgDescriptions() {
-                        return Collections.EMPTY_MAP;
-                    }
-
-                    @Override
-                    public void setRenderArgs(ITemplate template) {
-                    }
-                });
-                conf.put("rythm.i18n.message.resolver", new InMemoryMessageResolver(sessId));
-                //conf.put("log.source.java.enabled", false);
-                //conf.put("log.source.template.enabled", false);
                 e = new RythmEngine(conf);
                 e.registerTransformer(Order.class);
             } else {
@@ -104,9 +116,19 @@ public class Code implements Serializable {
         // FIXME? Is it correct to use a file? (which will make rythm use FileTemplateResource)
         Map<String, Object> context = new HashMap();
         context.put("session-id", Scope.Session.current().getId());
-        RythmEngine rythm = engine();
+        JSONWrapper json = JSONWrapper.wrap(params);
+        Map<String, Object> map = json.getObject();
+        Properties p = null;
+        if (map.containsKey("_conf")) {
+            JSONObject o = (JSONObject)map.get("_conf");
+            p = new Properties();
+            for (String k : o.keySet()) {
+                p.put(k, o.get(k));
+            }
+        }
+        RythmEngine rythm = engine(p);
         if (S.notEmpty(params)) {
-            return rythm.sandbox(context).render(main.getKey(), JSONWrapper.wrap(params));
+            return rythm.sandbox(context).render(main.getKey(), json);
         } else {
             return rythm.sandbox(context).render(main.getKey());
         }
