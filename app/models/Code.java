@@ -6,6 +6,7 @@ import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.RythmEngine;
 import com.greenlaw110.rythm.extension.ICodeType;
 import com.greenlaw110.rythm.extension.ISourceCodeEnhancer;
+import com.greenlaw110.rythm.logger.Logger;
 import com.greenlaw110.rythm.play.RythmPlugin;
 import com.greenlaw110.rythm.sandbox.RythmSecurityManager;
 import com.greenlaw110.rythm.sandbox.SandboxThreadFactory;
@@ -53,7 +54,7 @@ public class Code implements Serializable {
         if (null != userConf) conf.putAll(userConf);
         conf.put("resource.loader", new InMemoryResourceLoader(sessId));
         conf.put("default.code_type", ICodeType.DefImpl.HTML);
-        conf.put("engine.mode", Rythm.Mode.dev);
+        conf.put("engine.mode", Rythm.Mode.prod);
         conf.put("sandbox.security_manager", rsm);
         conf.put("sandbox.thread_factory", stf);
         RythmEngine playRE = RythmPlugin.engine;
@@ -98,6 +99,7 @@ public class Code implements Serializable {
             RythmEngine e;
             if (t2 == null) {
                 e = new RythmEngine(conf);
+                Logger.info(">>>>>>>>>>Cache enabled: %s", e.conf().cacheEnabled());
                 e.registerTransformer(Order.class);
             } else {
                 e = t2._1;
