@@ -92,13 +92,9 @@ public class Code implements Serializable {
         final Scope.Session sess = Scope.Session.current();
         final String sessId = sess.getId();
         Properties conf = _conf(p, sessId);
-        if (null != p && !p.isEmpty()) {
-            RythmEngine e = new RythmEngine(conf);
-            e.registerTransformer(Order.class);
-            return e;
-        }
+        String userConf = null == p ? "" : p.toString();
         synchronized (lock) {
-            F.T2<RythmEngine, Long> t2 = engines.get(sessId);
+            F.T2<RythmEngine, Long> t2 = engines.get(sessId + userConf);
             RythmEngine e;
             if (t2 == null) {
                 e = new RythmEngine(conf);
@@ -106,7 +102,7 @@ public class Code implements Serializable {
             } else {
                 e = t2._1;
             }
-            engines.put(sessId, F.T2(e, System.currentTimeMillis()));
+            engines.put(sessId + userConf, F.T2(e, System.currentTimeMillis()));
             return e;
         }
     }
@@ -116,10 +112,10 @@ public class Code implements Serializable {
         // FIXME? Is it correct to use a file? (which will make rythm use FileTemplateResource)
         Map<String, Object> context = new HashMap();
         context.put("session-id", Scope.Session.current().getId());
-        JSONWrapper json = JSONWrapper.wrap(params);
-        Map<String, Object> map = json.getObject();
+        JSONWrapper json = S.empty(params) ? null : JSONWrapper.wrap(params);
+        Map<String, Object> map = null == json ? null : json.getObject();
         Properties p = null;
-        if (map.containsKey("_conf")) {
+        if (null != map && map.containsKey("_conf")) {
             JSONObject o = (JSONObject)map.get("_conf");
             p = new Properties();
             for (String k : o.keySet()) {
