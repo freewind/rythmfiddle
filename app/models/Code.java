@@ -54,7 +54,8 @@ public class Code implements Serializable {
         if (null != userConf) conf.putAll(userConf);
         conf.put("resource.loader", new InMemoryResourceLoader(sessId));
         conf.put("default.code_type", ICodeType.DefImpl.HTML);
-        conf.put("engine.mode", Rythm.Mode.prod);
+        conf.put("engine.mode", Rythm.Mode.dev);
+        conf.put("cache.prod_only.enabled", false);
         conf.put("sandbox.security_manager", rsm);
         conf.put("sandbox.thread_factory", stf);
         RythmEngine playRE = RythmPlugin.engine;
