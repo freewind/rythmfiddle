@@ -3,7 +3,7 @@ html * {
       rendering-intent: auto;
 }
 .cm-s-rythm-web-light,.cm-s-rythm-web {
-    font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+    font-family: "Source Code Pro Semibold","Envy Code R",Consolas, Monaco, Menlo, 'Courier New', monospace;
     font-size: 10pt;
     line-height: 28px;
  }
