@@ -5,7 +5,7 @@ html * {
 .cm-s-rythm-web-light,.cm-s-rythm-web {
     font-family: "Source Code Pro Semibold","Envy Code R",Consolas, Monaco, Menlo, 'Courier New', monospace;
     font-size: 10pt;
-    line-height: 28px;
+    line-height: 20px;
  }
 .cm-s-rythm-web-light .CodeMirror-gutters,.cm-s-rythm-web .CodeMirror-gutters {
     background-color: #000;

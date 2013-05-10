@@ -79,6 +79,9 @@
     color: #F04441;
     border-color: #000;
 }
+pre.template_error {
+    font-family: "Source Code Pro Semibold","Envy Code R",Consolas, Monaco, Menlo, 'Courier New', monospace;
+}
 
 .file_active {
     color: red;
