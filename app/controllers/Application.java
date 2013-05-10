@@ -1,7 +1,7 @@
 package controllers;
 
 import com.google.gson.Gson;
-import com.greenlaw110.rythm.utils.S;
+import org.rythmengine.utils.S;
 import common.CodeManager;
 import common.Helper;
 import models.Code;

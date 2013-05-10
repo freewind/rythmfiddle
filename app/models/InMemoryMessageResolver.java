@@ -1,8 +1,8 @@
 package models;
 
-import com.greenlaw110.rythm.extension.II18nMessageResolver;
-import com.greenlaw110.rythm.template.ITemplate;
-import com.greenlaw110.rythm.utils.I18N;
+import org.rythmengine.extension.II18nMessageResolver;
+import org.rythmengine.template.ITemplate;
+import org.rythmengine.utils.I18N;
 import play.cache.Cache;
 
 import java.io.IOException;

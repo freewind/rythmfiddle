@@ -1,10 +1,10 @@
 package models;
 
-import com.greenlaw110.rythm.RythmEngine;
-import com.greenlaw110.rythm.extension.ICodeType;
-import com.greenlaw110.rythm.resource.ITemplateResource;
-import com.greenlaw110.rythm.resource.TemplateResourceBase;
-import com.greenlaw110.rythm.utils.S;
+import org.rythmengine.RythmEngine;
+import org.rythmengine.extension.ICodeType;
+import org.rythmengine.resource.ITemplateResource;
+import org.rythmengine.resource.TemplateResourceBase;
+import org.rythmengine.utils.S;
 
 public class CodeFile implements ITemplateResource {
     public String filename;

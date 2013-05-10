@@ -1,11 +1,12 @@
 package models;
 
-import com.greenlaw110.rythm.Rythm;
-import com.greenlaw110.rythm.RythmEngine;
-import com.greenlaw110.rythm.extension.ICodeType;
-import com.greenlaw110.rythm.internal.compiler.TemplateClass;
-import com.greenlaw110.rythm.resource.*;
-import com.greenlaw110.rythm.utils.S;
+import org.rythmengine.Rythm;
+import org.rythmengine.RythmEngine;
+import org.rythmengine.extension.ICodeType;
+import org.rythmengine.extension.ITemplateResourceLoader;
+import org.rythmengine.internal.compiler.TemplateClass;
+import org.rythmengine.resource.*;
+import org.rythmengine.utils.S;
 import play.cache.Cache;
 
 import java.io.File;

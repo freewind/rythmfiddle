@@ -1,7 +1,7 @@
 package common;
 
 import com.google.gson.Gson;
-import com.greenlaw110.rythm.utils.S;
+import org.rythmengine.utils.S;
 import models.Code;
 
 import java.util.HashMap;

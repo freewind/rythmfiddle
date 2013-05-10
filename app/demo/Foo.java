@@ -1,6 +1,6 @@
 package demo;
 
-import com.greenlaw110.rythm.play.RythmPlugin;
+import org.rythmengine.play.RythmPlugin;
 
 public class Foo {
     public Bar bar;

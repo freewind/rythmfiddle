@@ -1,8 +1,8 @@
 package demo;
 
 import com.alibaba.fastjson.JSON;
-import com.greenlaw110.rythm.play.RythmPlugin;
-import com.greenlaw110.rythm.utils.JSONWrapper;
+import org.rythmengine.play.RythmPlugin;
+import org.rythmengine.utils.JSONWrapper;
 
 public class User {
     private String username;
