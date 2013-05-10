@@ -79,7 +79,7 @@
     color: #F04441;
     border-color: #000;
 }
-pre.template_error {
+#RESULT_PANEL code, #RESULT_PANEL pre {
     font-family: "Source Code Pro Semibold","Envy Code R",Consolas, Monaco, Menlo, 'Courier New', monospace;
 }
 
