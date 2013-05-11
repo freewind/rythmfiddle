@@ -23,7 +23,7 @@ angular.module('myApp.filters', []).
             }
             
             function safe_tags_replace(str) {
-                return str.replace(/[&<>]/g, replaceTag);
+                return str ? str.replace(/[&<>]/g, replaceTag) : "";
             }
             
             return safe_tags_replace(str);
