@@ -60,7 +60,7 @@ public class Code implements Serializable {
         conf.put("sandbox.thread_factory", stf);
         RythmEngine playRE = RythmPlugin.engine;
         conf.put("engine.class_loader.parent", playRE.classLoader().getParent());
-        conf.put("engine.class_loader.bytecode_helper", playRE.conf().byteCodeHelper());
+        conf.put("engine.class_loader.byte_code_helper", playRE.conf().byteCodeHelper());
         conf.put("sandbox.allowed_system_properties", "java.io.tmpdir,file.encoding,user.dir,line.separator,java.vm.name,java.protocol.handler.pkgs,suppressRawWhenUnchecked");
         conf.put("codegen.source_code_enhancer", new ISourceCodeEnhancer() {
             @Override
