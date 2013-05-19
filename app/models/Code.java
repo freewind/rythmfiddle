@@ -2,19 +2,17 @@ package models;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import demo.Order;
 import org.rythmengine.Rythm;
 import org.rythmengine.RythmEngine;
 import org.rythmengine.extension.ICodeType;
 import org.rythmengine.extension.ISourceCodeEnhancer;
 import org.rythmengine.logger.Logger;
 import org.rythmengine.play.RythmPlugin;
-import org.rythmengine.sandbox.RythmSecurityManager;
-import org.rythmengine.sandbox.SandboxThreadFactory;
 import org.rythmengine.template.ITemplate;
 import org.rythmengine.utils.F;
 import org.rythmengine.utils.JSONWrapper;
 import org.rythmengine.utils.S;
-import demo.Order;
 import play.jobs.Every;
 import play.mvc.Scope;
 
@@ -45,10 +43,6 @@ public class Code implements Serializable {
 
     private static final Map<String, F.T2<RythmEngine, Long>> engines = new HashMap<String, F.T2<RythmEngine, Long>>();
 
-    private static final String sandboxPassword = UUID.randomUUID().toString();
-    private static final RythmSecurityManager rsm = new RythmSecurityManager(null, sandboxPassword, null);
-    private static final SandboxThreadFactory stf = new SandboxThreadFactory();
-
     private Properties _conf(Properties userConf, String sessId) {
         Properties conf = new Properties();
         if (null != userConf) conf.putAll(userConf);
@@ -56,12 +50,11 @@ public class Code implements Serializable {
         conf.put("default.code_type", ICodeType.DefImpl.HTML);
         conf.put("engine.mode", Rythm.Mode.dev);
         conf.put("cache.prod_only.enabled", false);
-        conf.put("sandbox.security_manager", rsm);
-        conf.put("sandbox.thread_factory", stf);
         RythmEngine playRE = RythmPlugin.engine;
         conf.put("engine.class_loader.parent", playRE.classLoader().getParent());
         conf.put("engine.class_loader.byte_code_helper", playRE.conf().byteCodeHelper());
         conf.put("sandbox.allowed_system_properties", "java.io.tmpdir,file.encoding,user.dir,line.separator,java.vm.name,java.protocol.handler.pkgs,suppressRawWhenUnchecked");
+        conf.put("engine.playframework.enabled", true);
         conf.put("codegen.source_code_enhancer", new ISourceCodeEnhancer() {
             @Override
             public List<String> imports() {
