@@ -47,7 +47,7 @@ public class Code implements Serializable {
 
     private static final String sandboxPassword = UUID.randomUUID().toString();
     private static final RythmSecurityManager rsm = new RythmSecurityManager(null, sandboxPassword, null);
-    private static final SandboxThreadFactory stf = new SandboxThreadFactory(rsm, sandboxPassword, null);
+    private static final SandboxThreadFactory stf = new SandboxThreadFactory();
 
     private Properties _conf(Properties userConf, String sessId) {
         Properties conf = new Properties();
