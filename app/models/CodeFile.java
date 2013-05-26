@@ -69,7 +69,7 @@ public class CodeFile implements ITemplateResource {
     @Override
     public ICodeType codeType() {
         if (null == type) { 
-            RythmEngine engine = RythmEngine.get();
+            //RythmEngine engine = RythmEngine.get();
             type = TemplateResourceBase.getTypeOfPath(engine, getKey());
         }
         

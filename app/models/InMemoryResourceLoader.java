@@ -139,7 +139,7 @@ public class InMemoryResourceLoader implements ITemplateResourceLoader {
                             tc = new TemplateClass(tr, engine);
                         }
                         try {
-                            tc.asTemplate(); // register the template
+                            tc.asTemplate(engine); // register the template
                             return tc;
 //                            ITemplate t = tc.asTemplate();
 //                            if (null != t) {
