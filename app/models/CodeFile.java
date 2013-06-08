@@ -50,14 +50,6 @@ public class CodeFile implements ITemplateResource {
         return true;
     }
 
-    @Override
-    public String tagName() {
-        if (null == tagName) {
-            this.tagName = getFullTagName(getKey());
-        }
-        return tagName;
-    }
-
     private static String getFullTagName(String key) {
         if (key.startsWith("/")) key = key.substring(1);
 //        int pos = key.lastIndexOf(".");
