@@ -2,6 +2,7 @@ package models;
 
 import org.rythmengine.RythmEngine;
 import org.rythmengine.extension.ICodeType;
+import org.rythmengine.extension.ITemplateResourceLoader;
 import org.rythmengine.resource.ITemplateResource;
 import org.rythmengine.resource.TemplateResourceBase;
 import org.rythmengine.utils.S;
@@ -12,8 +13,11 @@ public class CodeFile implements ITemplateResource {
     public boolean isMain;
     public String tagName;
     public String sessionId;
-    private RythmEngine engine;
+
+    public CodeFile () {
+    }
     
+
     @Override
     public String getKey() {
         if (filename.startsWith("/")) return filename;
@@ -31,8 +35,8 @@ public class CodeFile implements ITemplateResource {
     }
 
     @Override
-    public void setEngine(RythmEngine engine) {
-        this.engine = engine;
+    public ITemplateResourceLoader getLoader() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -58,16 +62,16 @@ public class CodeFile implements ITemplateResource {
     }
 
     private ICodeType type = null;
+
     @Override
-    public ICodeType codeType() {
-        if (null == type) { 
+    public ICodeType codeType(RythmEngine engine) {
+        if (null == type) {
             //RythmEngine engine = RythmEngine.get();
             type = TemplateResourceBase.getTypeOfPath(engine, getKey());
         }
-        
         return type;
     }
-    
+
     public void save(String sessionId) {
         this.sessionId = sessionId;
         InMemoryResourceLoader.save(getKey(), sessionId, this);
@@ -76,7 +80,7 @@ public class CodeFile implements ITemplateResource {
     public boolean equals(Object that) {
         if (this == that) return true;
         if (that instanceof CodeFile) {
-            CodeFile cf = (CodeFile)that;
+            CodeFile cf = (CodeFile) that;
             return cf.getKey().equals(this.getKey()) && S.eq(cf.sessionId, this.sessionId) && cf.source.equals(this.source);
         } else {
             return false;

@@ -2,9 +2,8 @@
 
 require:
     - play
-#    - org.rythmengine -> rythm-engine 1.0-b5
-    - com.gelinsoft -> play-rythm 1.0-b9c
-    - com.gelinsoft -> app-base 1.5.0
+    - com.gelinsoft -> play-rythm 1.0.1-b2
+    - com.gelinsoft -> app-base 2.1.3
     - com.gelinsoft -> betterlogs 1.2i
 
 repositories:

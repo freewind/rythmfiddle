@@ -69,9 +69,9 @@ describe("angular+jqlite", function() {
 
 });
 
-  describe("cookbook/helloworld", function() {
+  describe("cookbook/i18n", function() {
     beforeEach(function() {
-      browser().navigateTo("index-nocache.html#!/cookbook/helloworld");
+      browser().navigateTo("index-nocache.html#!/cookbook/i18n");
     });
   
     it('should change the binding when user enters text', function() {
@@ -2386,9 +2386,9 @@ describe("angular+jquery", function() {
 
 });
 
-  describe("cookbook/helloworld", function() {
+  describe("cookbook/i18n", function() {
     beforeEach(function() {
-      browser().navigateTo("index-jq-nocache.html#!/cookbook/helloworld");
+      browser().navigateTo("index-jq-nocache.html#!/cookbook/i18n");
     });
   
     it('should change the binding when user enters text', function() {
