@@ -1,7 +1,5 @@
 package demo;
 
-import org.rythmengine.play.RythmPlugin;
-
 public class Foo {
     public Bar bar;
     
@@ -18,6 +16,6 @@ public class Foo {
     }
     
     public String toString() {
-        return RythmPlugin.substitute("Foo[@1]", bar);
+        return String.format("Foo[%s]", bar);
     }
 }

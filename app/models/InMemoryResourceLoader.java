@@ -1,5 +1,6 @@
 package models;
 
+import org.rythmengine.logger.Logger;
 import org.rythmengine.resource.ResourceLoaderBase;
 import play.cache.Cache;
 
@@ -19,11 +20,20 @@ public class InMemoryResourceLoader extends ResourceLoaderBase {
     }
 
     public static void save(String path, String sessionId, CodeFile file) {
-        Cache.set(key(path, sessionId), file);
+        String k = key(path, sessionId);
+        Logger.info("save %s", k);
+        Cache.set(k, file);
     }
     
     public static CodeFile load(String path, String sessionId) {
-        return (CodeFile)Cache.get(key(path, sessionId));
+        String k = key(path, sessionId);
+        CodeFile cf = (CodeFile) Cache.get(k);
+        if (cf != null) {
+            Logger.info("load %s: success", k);
+        } else {
+            if (!path.startsWith("/")) return load("/" + path, sessionId);
+        }
+        return cf;
     }
 
     protected static String key(String path, String sessionId) {

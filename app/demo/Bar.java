@@ -1,7 +1,5 @@
 package demo;
 
-import org.rythmengine.play.RythmPlugin;
-
 import java.util.UUID;
 
 public class Bar {
@@ -19,6 +17,6 @@ public class Bar {
     }
     
     public String toString() {
-        return RythmPlugin.substitute("Bar[@1]", id);
+        return String.format("Bar[%s]", id);
     }
 }
